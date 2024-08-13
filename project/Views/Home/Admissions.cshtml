@@ -1,0 +1,75 @@
+﻿<div class="dream-university-subpage">
+
+	<!-- Begin breadcrumbs-->
+	<div class="du-page-header du-breadcrumbs">
+		<div class="container">
+			<div class="row">
+				
+			</div>
+		</div>
+	</div>
+	<!-- End breadcrumbs-->
+	<!-- Begin Event -->
+	<div class="du-subpage-content">
+		<div class="du-admission">
+
+			<!-- Begin choose us -->
+			<section class="admission ptb-50">
+
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 text-center">
+							<h2>@ViewBag.Title</h2>
+
+						</div>
+					</div>
+
+					<section class="du-admission-content">
+
+						<div class="row">
+							@foreach(ServiceItem item in ViewBag.ServiceItems)
+							{
+								@if (item.Father == ViewBag.Title)
+								{
+									<div class="col-md-4 ">
+										<div class="thumbnail">
+											<img src="~/img/photo/@item.TitleImagePath" title="Designed by vectorjuice / Freepik">
+											<div class="caption" style="height:120px; text-align:center">
+												<h4>@item.Title</h4>
+
+												<div class="admission-feature">
+													@if (item.MakePage == true)
+													{
+														<a asp-controller="Services" asp-action="Index" asp-route-Id="@item.Id" class="btn-default du-common-property">Вся інформація</a>
+													}
+													else
+													{
+														<a href="@item.Subtitle" class="btn-default du-common-property">Вся інформація</a>
+													}
+
+												</div>
+
+											</div>
+										</div>
+									</div>
+								}
+							}
+						</div>
+
+
+
+					</section>
+
+				</div>
+			</section>
+			<!-- End event -->
+
+
+
+
+		</div><!-- /.du-event -->
+	</div><!-- /.du-subpage content -->
+	<!-- End Evnet -->
+
+
+</div>

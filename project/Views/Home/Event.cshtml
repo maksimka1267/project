@@ -1,0 +1,85 @@
+﻿<div class="dream-university-subpage">
+
+	<!-- Begin breadcrumbs-->
+	<div class="du-page-header du-breadcrumbs">
+		<div class="container">
+			<div class="row">
+				
+			</div>
+		</div>
+	</div>
+	<!-- End breadcrumbs-->
+	<!-- Begin Event -->
+	<div class="du-subpage-content">
+		<div class="du-event">
+
+			<!-- Begin choose us -->
+			<section class="event ptb-50">
+
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 text-center">
+							<h2>@ViewBag.Title</h2>
+						</div>
+					</div>
+
+					<section class="du-all-event">
+
+						
+							@{
+								@foreach (ServiceItem item in ViewBag.ServiceItems)
+								{
+									@if (item.Father == ViewBag.Title)
+									{
+										<div class="row" style="height:310px">
+											<div class="col-lg-4 col-md-12 col-sm-12 du-news-date-box wow fadeInRight" data-wow-delay="0.2s">
+												<div>
+													<div>
+														<h2>@item.DateAdded.ToString("dd MMMM", new System.Globalization.CultureInfo("en-US"))<br /><img src="img/page1_icon4.png" alt=""></h2>
+													</div>
+													<div class="du-date-short-des">
+														<p>@item.Title</p>
+													</div>
+												</div>
+											</div>
+											<div class="col-lg-8 col-md-12 col-sm-12 wow fadeInLeft">
+											<a asp-controller="Services" asp-action="Index" asp-route-Id="@item.Id"><figure><img src="~/img/page1_pic4.jpg" alt="" style="height:240px; width:770px;"></figure></a>
+											</div>
+										</div>
+									}
+								}
+							}
+					</section>
+
+				</div>
+				<div class="blog-page-pagination">
+					<!-- Pagination Small -->
+					<ul class="pagination pagination-sm">
+						@if (ViewBag.CurrentPage > 1)
+						{
+							<li><a href="@Url.Action("Event", new { title = ViewBag.Title, page = 1 })">«</a></li>
+							<li><a href="@Url.Action("Event", new { title = ViewBag.Title, page = ViewBag.CurrentPage - 1 })">&lt;</a></li>
+						}
+						@for (int i = 1; i <= ViewBag.TotalPages; i++)
+						{
+							<li class="@(i == ViewBag.CurrentPage ? "active" : "")"><a href="@Url.Action("Event", new { title = ViewBag.Title, page = i })">@i</a></li>
+						}
+						@if (ViewBag.CurrentPage < ViewBag.TotalPages)
+						{
+							<li><a href="@Url.Action("Event", new { title = ViewBag.Title, page = ViewBag.CurrentPage + 1 })">&gt;</a></li>
+							<li><a href="@Url.Action("Event", new { title = ViewBag.Title, page = ViewBag.TotalPages })">»</a></li>
+						}
+					</ul>
+				</div>
+			</section>
+			<!-- End event -->
+
+
+
+
+		</div><!-- /.du-event -->
+	</div><!-- /.du-subpage content -->
+	<!-- End Evnet -->
+
+
+</div>

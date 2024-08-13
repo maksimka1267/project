@@ -1,0 +1,27 @@
+﻿@model IQueryable<TextField>
+	<div class="box">
+	<div class="container">
+
+		<div class="header-element clearfix">
+			<div class="row">
+				<div class="col-sm-1">
+					<h1 class="navbar-brand navbar-brand_"><a href="/"><img class="img-responsive" style="max-width:45%" src="~/img/logo.png" alt="logo"></a></h1>
+				</div>
+				<div class="col-md-12">
+					<ul class="flexy-menu orange" style="margin: -50px 0px 0px 100px">
+						@foreach (TextField field in Model)
+						{
+							@if (field.Father == null)
+							{
+								<li>
+									<a asp-area="" asp-controller="Home" asp-action="@field.View" asp-route-title="@field.Title"><i class="icon-th"></i>@field.Title</a>
+								</li>
+							}
+							
+						}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

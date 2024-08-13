@@ -1,0 +1,121 @@
+﻿<div class="dream-university-subpage">
+
+	<!-- Begin breadcrumbs-->
+	<div class="du-page-header du-breadcrumbs">
+		<div class="container">
+			<div class="row">
+				
+			</div>
+		</div>
+	</div>
+	<!-- End breadcrumbs-->
+	<!-- Begin Event -->
+	<div class="du-subpage-content">
+		<div class="du-faculty">
+
+			<!-- Begin faculty us -->
+			<section class="faculty pt-50">
+
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<h2 class="text-left">@ViewBag.Title</h2>
+							<div class="du-faculty-name">
+                                <ul class="du-choose-list">
+                                    @{
+										int i = 2;
+										@foreach(TextField item in ViewBag.TextFields)
+										{
+											@if (item.Father == ViewBag.Title)
+											{
+												<li><a href="#@i"><strong>@item.Title</strong></a></li>
+												i++;
+											}
+										}
+									}
+								</ul>
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+				@{
+					int k = 2;
+					@foreach (TextField item in ViewBag.TextFields)
+					{
+						@if (item.Father == ViewBag.Title)
+						{
+							if (k % 2 == 0)
+							{
+								<section class="civil-engineering pb-50">
+									<div id="@k" class="container">
+
+										<div class="du-civil pt-20">
+											<div class="row">
+												<div class="col-md-8 wow fadeInLeft">
+													<h3 class="text-left">@item.Title</h3>
+													<p>@Html.Raw(item.Text)</p>
+													@if (item.Child == true)
+													{
+														<h4>Більше інформації:</h4>
+														<div class="du-faculty-name">
+															<ul class="du-choose-list">
+																@foreach(var service in ViewBag.ServiceItems)
+																{
+																	<li><a asp-controller="Services" asp-action="Header" asp-route-title="@service"><strong>@service</strong></a></li>
+																}
+															</ul>
+														</div>
+													}
+													
+												</div>
+											</div>
+										</div>
+									</div>
+								</section>
+								k++;
+							}
+							else if (k % 2 != 0)
+							{
+								
+								<section class="electronic-engineering du-section-ash ptb-50">
+									<div id="@k" class="container">
+
+										<div class="du-civil">
+											<div class="row">
+												<div class="col-md-8 wow fadeInLeft">
+													<h3 class="text-left">@item.Title</h3>
+													<p>@Html.Raw(item.Text)</p>
+													@if (item.Child == true)
+													{
+														<h4>Більше інформації:</h4>
+														<div class="du-faculty-name">
+															<ul class="du-choose-list">
+																@foreach (var service in ViewBag.ServiceItems)
+																{
+																	<li><a asp-controller="Services" asp-action="Header" asp-route-title="@service"><strong>@service</strong></a></li>
+																}
+															</ul>
+														</div>
+													}
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</section>
+								k++;
+							}
+						}
+					}
+				}
+				
+				<!-- End civil engineering -->
+
+
+				
+			</section>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,132 @@
+﻿@model ServiceItem;
+<div class="dream-university-subpage">
+
+    <!-- Begin breadcrumbs-->
+    <div class="du-page-header du-breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7 col-sm-7 col-xs-12 text-left du-title">
+                    <div class="du-breadcrumb-title"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End breadcrumbs-->
+    <!-- Begin Blog single -->
+    <div class="du-subpage-content">
+        <div class="du-single-page">
+
+            <!-- Begin Single Post -->
+
+            <section class="single-page ptb-50">
+                <div class="container">
+
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h2>@Model.Title</h2>
+                            <div class="box-container post">
+                                <img alt="image" class="media-object img-responsive" src="~/img/photo/@Model.TitleImagePath" style="max-width:300px; max-height:200px">
+                                <div class="ptb-30">
+                                    <div class="clearfix meta">
+                                        <p class="serif italic pull-left">
+                                            Дата:
+                                            <a>
+                                                @Model.DateAdded.ToString("dd.MM.yyyy", new System.Globalization.CultureInfo("en-US"))
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <p>
+                                        @Html.Raw(Model.Text)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Blog sidebar -->
+
+                        <div class="col-md-3">
+                            <div class="sidebar">
+                                <div class="sidebar-inner">
+                                    
+
+                                    <div class="widget">
+                                        <a asp-controller="Home" asp-action="Event" asp-route-title="Новини"><h3 class="widget-title">Новини</h3></a>
+
+                                        <div class="post-list">
+                                            @{
+                                                int i = 1;
+                                                @foreach (ServiceItem item in ViewBag.ServiceItem)
+                                                {
+                                                    @if (item.Father == "Новини" && i <= 3)
+                                                    {
+                                                        i++;
+                                                        <div class="sidebar-single-post clearfix">
+                                                            <div class="sidebar-single-post-picture col-sm-12 col-md-4">
+                                                                <div class="sidebar-single-post-picture-inner">
+                                                                    <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id" class="sidebar-single-post-picture-target">
+                                                                        <img class="img-responsive" src="~/img/photo/@item.TitleImagePath" alt="">
+                                                                    </a>
+                                                                </div><!-- /.sidebar-single-post-picture -->
+                                                            </div><!-- /.sidebar-single-post-picture -->
+
+                                                            <div class="sidebar-post-content-box col-sm-12 col-md-8">
+                                                                <h4 class="sidebar-single-post-title"><a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">@item.Title</a></h4><!-- /.sidebar-single-post-title -->
+                                                                <div class="sidebar-post-content"> <span class="sidebar-post-content-suffix">@item.DateAdded.ToString("dd.MM.yyyy", new System.Globalization.CultureInfo("en-US"))</span></div><!-- /.sidebar-post-content -->
+                                                            </div><!-- /.sidebar-post-content-box -->
+                                                        </div><!-- /.sidebar-single-post -->
+                                                    }
+                                                }
+                                            }
+                                            
+
+                                        </div><!-- /.post-list -->
+                                    </div><!-- /.widget -->
+
+
+                                    <div class="widget">
+                                        <a asp-controller="Home" asp-action="Event" asp-route-title="Події"><h3 class="widget-title">Остані події</h3></a>
+
+                                        <div class="post-list">
+                                            @{
+                                                int k = 1;
+                                                @foreach (ServiceItem item in ViewBag.ServiceItem)
+                                                {
+                                                    @if (item.Father == "Події" && k <= 3)
+                                                    {
+                                                        k++;
+                                                        <div class="sidebar-single-post clearfix">
+                                                            <div class="sidebar-single-post-picture col-sm-12 col-md-4">
+                                                                <div class="sidebar-single-post-picture-inner">
+                                                                    <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id" class="sidebar-single-post-picture-target">
+                                                                        <img class="img-responsive" src="~/img/photo/@item.TitleImagePath" alt="">
+                                                                    </a>
+                                                                </div><!-- /.sidebar-single-post-picture -->
+                                                            </div><!-- /.sidebar-single-post-picture -->
+
+                                                            <div class="sidebar-post-content-box col-sm-12 col-md-8">
+                                                                <h4 class="sidebar-single-post-title"><a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">@item.Title</a></h4><!-- /.sidebar-single-post-title -->
+                                                                <div class="sidebar-post-content"> <span class="sidebar-post-content-suffix">@item.DateAdded.ToString("dd.MM.yyyy", new System.Globalization.CultureInfo("en-US"))</span></div><!-- /.sidebar-post-content -->
+                                                            </div><!-- /.sidebar-post-content-box -->
+                                                        </div>
+
+                                                        <!-- /.sidebar-single-post -->
+                                                    }
+                                                }
+                                            }
+                                        </div><!-- /.post-list -->
+                                    </div><!-- /.widget popular property -->
+
+                                </div><!-- /.sidebar-inner -->
+                            </div><!-- /.sidebar -->
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <!-- End Single Post -->
+
+        </div><!-- /.du-blog-single -->
+    </div><!-- /.du-subpage content -->
+    <!-- End blog single -->
+
+</div>

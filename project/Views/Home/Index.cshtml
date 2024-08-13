@@ -1,0 +1,296 @@
+﻿<div class="du-banner-area">
+	<div class="du-featured-photo">
+		<img class="img-responsive" src="img/mama7.jpg" alt="featured photo">
+		<div class="du-featured-text">
+			<!--welcome-message-->
+			<header class="welcome-message text-center">
+                <h1><span class="rotate" style="color:#555a78"> Запорізький будівельний, фаховий коледж, Для тих - хто будує майбутнє</span></h1>
+			</header>
+			<!--welcome-message end-->
+		</div>
+	</div>
+</div>
+<div class="clear"></div>
+
+
+<div class="dream-university">
+
+
+    <!--Begin feature-->
+    <div class="du-feature">
+        <div class="container">
+            <div class="row">
+                    @{
+                        int i = 1;
+                        @foreach(ServiceItem item in ViewBag.ServiceItems)
+                            {
+                            @if (item.Father == "Вступнику")
+                            {
+                                @if (item.ShowBanners == true)
+                                {
+                                    <div class="col-lg-4 col-md-4 col-sm-4 wow fadeIn" data-wow-delay="0.1s">
+                                        <div class="du-feature-box maxheight">
+                                            <div class="badge"><img src="~/img/page1_icon@($"{i}").png" alt=""></div>
+                                            <div class="du-caption-box">
+                                                <div class="du-caption">
+                                                    <p class="title">@item.Title</p>
+                                                    <p>@item.Subtitle </p>
+                                                    <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id" class="btn-default du-common-property">Вся інформація</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    i++;
+                                }
+                            }
+                        }
+                    }
+            </div>
+        </div>
+    </div>
+    <!-- End feature -->
+    <!--Begin our faculty-->
+    <div class="our-faculty">
+        <div class="container">
+            <h2 class="center">Спеціальності</h2>
+
+            <div class="row">
+                @foreach(ServiceItem item in ViewBag.ServiceItems)
+                {
+                    @if (item.Father == "Спеціальності")
+                    {
+                        <div class="col-lg-4 col-md-4 col-sm-4" style="height:280px">
+                            <div class="du-faculty-item wow fadeInRight animated" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInRight;">
+                                <figure>
+                                    <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id"><img class="img-responsive" style="width:370px; height:200px" src="~/img/photo/@item.TitleImagePath" alt="image"></a>
+                                </figure>
+                                <div class="du-caption-box">
+                                    <div class="du-caption">
+                                        <h4><a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">@item.Title</a></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    
+                }
+                
+            </div>
+        </div>
+    </div>
+    <!--End our faculty-->
+    <!--Begin for student -->
+    <div class="for-students">
+        <div class="container">
+            <h2 class="center">Студенту</h2>
+
+            <div class="row">
+                @foreach(ServiceItem item in ViewBag.ServiceItems)
+                {
+                    @if (item.Father == "Студенту")
+                    {
+                        @if (item.ShowBanners == true)
+                        {
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div class="du-faculty-item wow fadeInRight" data-wow-delay="0.1s">
+                                    <figure><img src="~/img/photo/@item.TitleImagePath" alt=""></figure>
+                                    <div class="du-caption-box">
+                                        <div class="du-caption">
+                                            <h3>@item.Title</h3>
+                                            @if (item.MakePage == true)
+                                            {
+                                                <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id" class="btn-default du-common-property">Вся інформація</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="@item.Subtitle" target="_blank" class="btn-default du-common-property">Вся інформація</a>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <!--End for student-->
+    <!--Begin news -->
+    <div class="du-news">
+        <div class="container">
+            <h2 class="center">Новини</h2>
+
+            <div class="row">
+                @{
+                    int k = 1;
+                    @foreach (ServiceItem item in ViewBag.ServiceItems)
+                    {
+                        @if (item.Father == "Новини"&& k<=3)
+                        {
+                            k++;
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div class="du-news-item wow fadeInRight" data-wow-delay="0.1s">
+                                    <figure><img class="img-responsive" src="~/img/photo/@item.TitleImagePath" alt=""></figure>
+                                    <div class="du-caption-box" style="background: #555a78 ">
+                                        <div class="du-caption">
+                                            <h3>@item.Title</h3>
+                                            <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id"><img src="~/img/more_arrow1.png" alt=""></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+
+
+            </div>
+        </div>
+    </div>
+    <!--End news-->
+    <!--Begin success story -->
+    <div class="du-graduate-success-story">
+        <div class="container">
+            <h2 class="center">Історії випускників</h2>
+
+            <div class="row">
+
+                <div class="cbp-l-slider-testimonials-wrap">
+
+                    <div class="cbp-panel" style="max-width:980px">
+                        <div id="grid-container" class="cbp-l-grid-slider-testimonials cbp-slider-edge">
+                            <div class="cbp-item graphic">
+                                <div class="du-best-student">
+                                    <figure><img src="img/kate_01.png" alt=""></figure>
+                                </div>
+
+                                <div class="cbp-l-grid-slider-testimonials-body">
+                                    “Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu libero scelerisque ligula sagittis faucibus eget quis lacus. Suspendisse sodales sed orci ac feugiat”
+                                </div>
+                                <div class="cbp-l-grid-slider-testimonials-footer">
+                                    <p class="bodytext"><b>Name:</b> Titus<br><b>Degree:&nbsp;</b> History and French<br><b>University:</b> University of York</p>
+                                </div>
+                            </div>
+                            <div class="cbp-item web-design logos">
+                                <div class="du-best-student">
+                                    <figure><img src="img/chris.png" alt=""></figure>
+                                </div>
+                                <div class="cbp-l-grid-slider-testimonials-body">
+                                    “Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu libero scelerisque ligula sagittis faucibus eget quis lacus. Suspendisse sodales sed orci ac feugiat”
+                                </div>
+                                <div class="cbp-l-grid-slider-testimonials-footer">
+                                    <p class="bodytext"><b>Name:</b> Chris<br><b>Degree:&nbsp;</b> Mathematics<br><b>University:</b> Cardiff</p>
+                                </div>
+                            </div>
+                            <div class="cbp-item graphic logos">
+                                <div class="du-best-student">
+                                    <figure><img src="img/darren.png" alt=""></figure>
+                                </div>
+                                <div class="cbp-l-grid-slider-testimonials-body">
+                                    “Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu libero scelerisque ligula sagittis faucibus eget quis lacus. Suspendisse sodales sed orci ac feugiat”
+                                </div>
+                                <div class="cbp-l-grid-slider-testimonials-footer">
+                                    <p class="bodytext"><b>Name:</b> Darren<br><b>Degree:&nbsp;</b> Mathematics<br><b>University:</b> University of Manchester</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--End success story-->
+    <!--Begin scholarship -->
+    <div class="du-scholarship">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="du-scholarship-item wow fadeInLeft">
+                        <figure><img src="~/img/student.png" alt=""></figure>
+                        <div class="du-caption-box">
+                            <div class="du-caption">
+                                <h3>Відділення механік</h3>
+                                <a asp-controller="Services" asp-action="Header" asp-route-title="Віділення Механік" class="btn-default du-common-property">Вся інформація</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="du-scholarship-item wow fadeInLeft">
+                        <figure><img src="~/img/diploma.png" alt=""></figure>
+                        <div class="du-caption-box">
+                            <div class="du-caption">
+                                <h3>Практичне навчання</h3>
+
+                                <a asp-controller="Services" asp-action="Header" asp-route-title="Практичне навчання" class="btn-default du-common-property">Вся інформація</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="du-scholarship-item wow fadeInLeft">
+                        <figure><img src="~/img/student.png" alt=""></figure>
+                        <div class="du-caption-box">
+                            <div class="du-caption">
+                                <h3>Відділення будівельник</h3>
+                                <a asp-controller="Services" asp-action="Header" asp-route-title="Віділення Будівельник" class="btn-default du-common-property">Вся інформація</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    <!--End scholarship-->
+    <!--Begin current news -->
+    <div class="du-current-news center">
+        <div class="container">
+            <h2 class="center">Події:</h2>
+            <div class="row">
+                @{
+                    int n = 1;
+                    @foreach (ServiceItem item in ViewBag.ServiceItems)
+                    {
+                        @if (item.Father == "Події"&& n<=3)
+                        {
+                            n++;
+                            <div class="col-lg-4 col-md-12 col-sm-12 du-news-date-box wow fadeInRight" data-wow-delay="0.2s">
+                                <div style="height:200px">
+                                    <h2>@item.DateAdded.ToString("dd MMMM", new System.Globalization.CultureInfo("en-US"))<br></h2>
+                                    <div class="du-date-short-des">
+                                        <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id"><h3 style="color:white;">@item.Title</h3></a>
+                                        <p>@item.Subtitle</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 col-md-12 col-sm-12 wow fadeInLeft">
+                                <figure><img src="~/img/page1_pic4.jpg" alt=""></figure>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+            <a asp-controller="Home" asp-action="Event" asp-route-title="Події" class="btn-default du-common-property">Події</a>
+        </div>
+    </div>
+    <!--End current news -->
+    <!--Begin newsletter -->
+    <div class="du-newsletter">
+        <div class="container">
+            <h2 class="wow fadeInUp">Корисні посилання</h2>
+                <div >
+                    <a href="https://www.mon.gov.ua/?__cf_chl_rt_tk=aLbbEm4jbMBzAtPdw8mbHx7tJ55yI6THbZkWObPIk3Y-1708016521-0.0-3773"><img src="~/img/link/ministerstvo.png" alt=""></a>
+                    <a href="https://osvita.ua/"><img src="~/img/link/OsvitaUA_logo_1607.png" alt=""></a>
+                    <a href="http://osvita.zoda.gov.ua/"><img src="~/img/link/Департамент освіти і науки.png" alt=""></a>
+                    <a href="https://eo.gov.ua/"><img src="~/img/link/eologov2.jpg" alt=""></a>
+                </div>
+        </div>
+     </div>
+
+</div>
+<!--End newsletter -->

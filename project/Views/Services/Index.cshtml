@@ -1,0 +1,36 @@
+﻿@model IQueryable<ServiceItem>
+
+<div id="main-wrapper">
+	<div class="wrapper style3">
+		<div class="inner">
+			<div class="container">
+				<div class="row">
+					<div class="col-8 col-12-medium">
+						<!-- Список статей -->
+						<section class="box article-list">
+							<h2 class="icon fa-file-alt">Новини</h2>
+
+							@foreach (ServiceItem entity in Model)
+							{
+								<article class="box excerpt">
+									<a asp-area="" asp-controller="Services" asp-action="Index" asp-route-id="@entity.Id" class="image left">
+										<img src="~/images/photo/@entity.TitleImagePath" />
+									</a>
+									<div>
+										<header>
+											<span class="date">@entity.DateAdded</span>
+											<h3>@entity.Title</h3>
+										</header>
+										<p>
+											@entity.Subtitle
+										</p>
+									</div>
+								</article>
+							}
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
