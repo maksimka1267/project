@@ -38,7 +38,7 @@
 						<div class="du-choose-us pt-20">
 							<div class="row">
 								<div class="col-md-6 wow fadeInLeft">
-									<img class="img-responsive" src="~/img/choose-us.jpg" alt="image">
+									<img class="img-responsive" src="~/img/about.jpg" alt="image">
 								</div>
 								<div class="col-md-6 wow fadeInRight">
 									<p>
@@ -89,10 +89,10 @@
 					<!-- Container -->
 					<div class="container">
 						<div class="row">
-							<h2 class="text-center">Наше керівницство</h2>
+							<h2 class="text-center">Адміністрація</h2>
 							@foreach (ServiceItem item in ViewBag.ServiceItems)
 								{
-								@if (item.Father == "Керівництво коледжу")
+								@if (item.Father == "Адміністрація")
 										{
 											<div class="col-md-3 col-sm-6">
 												<!-- Team Box -->
@@ -123,12 +123,15 @@
 						<div class="principal-photo col-md-2 wow fadeInLeft">
 							<img class="img-responsive" src="~/img/logo.png" alt="image">
 						</div>
-
-						<div class="col-md-10 wow fadeInRight">
-							<p>
-								"Aenean cursus fermentum euismod. Cras sodales nibh sed egestas adipiscing. Vestibulum sit amet eros sapien. Vestibulum quis dapibus sem. Fusce a lacinia nisl. Mauris sagittis egestas justo. Praesent tempus quis nibh nec imperdiet."
-							</p>
-						</div>
+						@foreach(ServiceItem item1 in ViewBag.ServiceItems)
+						{
+							@if(item1.Father=="Профсоюзна спілка")
+							{
+								<div class="col-md-10 wow fadeInRight">
+									<p>@Html.Raw(item1.Text)</p>
+								</div>
+							}
+						}
 					</div>
 				</div>
 			</section>

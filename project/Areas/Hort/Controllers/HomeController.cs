@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using project.Domain;
 
 namespace project.Areas.Hort.Controllers
 {
 	[Area("Hort")]
-	public class HomeController : Controller
+	[Authorize]
+    public class HomeController : Controller
 	{
 		private readonly DataManager dataManager;
 

@@ -41,7 +41,7 @@
                 <label asp-for="TitleImagePath">Шлях до зображення</label>
                 @if (!string.IsNullOrEmpty(Model.TitleImagePath))
                 {
-                    <img src="@Url.Content($"~/img/photo/{Model.TitleImagePath}")" alt="Current Image" style="max-width:50%"/>
+                    <img src="@Url.Content($"~/img/photo/{Model.TitleImagePath}")" alt="Current Image" style="max-width:50%" />
                 }
                 <input type="file" name="titleImageFile" id="titleImageFile" accept="image/*" />
                 <p>@Model.TitleImagePath</p>

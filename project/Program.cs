@@ -6,30 +6,25 @@ using project.Domain.Repositories.EntityFramework;
 using project.Service;
 
 var builder = WebApplication.CreateBuilder(args);
-IServiceCollection services = builder.Services;
 
-// Configure services
-
-
-var configuration = builder.Configuration; // Retrieve the IConfiguration from the builder
-
-// Your existing configuration setup (if any)
+// Retrieve the IConfiguration from the builder
+var configuration = builder.Configuration;
 configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 configuration.AddEnvironmentVariables();
 configuration.AddCommandLine(args);
 
-services.AddTransient<ITextFieldsRepository, EFTextFieldsRepository>();
-services.AddTransient<IServiceItemsRepository, EFServiceItemsRepository>();
-services.AddTransient<IPhotoFieldsReporitory, EFPhotoFieldsRepository>();
-services.AddTransient<DataManager>();
-var connectionString = builder.Configuration.GetConnectionString("AppDbConnectionString");
-services.AddDbContext<AppDbContext>(options =>
-	options.UseSqlServer(configuration.GetConnectionString("AppDbConnectionString")),
-	ServiceLifetime.Scoped // Устанавливаем время жизни службы как Scoped
-);
+// Configure services
+builder.Services.AddTransient<ITextFieldsRepository, EFTextFieldsRepository>();
+builder.Services.AddTransient<IServiceItemsRepository, EFServiceItemsRepository>();
+builder.Services.AddTransient<IPhotoFieldsReporitory, EFPhotoFieldsRepository>();
+builder.Services.AddTransient<DataManager>();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(configuration.GetConnectionString("AppDbConnectionString")),
+    ServiceLifetime.Scoped);
 
 // Configure identity system
-services.AddIdentity<IdentityUser, IdentityRole>(opts =>
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(opts =>
 {
     opts.User.RequireUniqueEmail = true;
     opts.Password.RequiredLength = 6;
@@ -37,51 +32,57 @@ services.AddIdentity<IdentityUser, IdentityRole>(opts =>
     opts.Password.RequireDigit = false;
     opts.Password.RequireLowercase = false;
     opts.Password.RequireUppercase = false;
-}).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+})
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
 
 // Configure authentication cookie
-services.ConfigureApplicationCookie(options =>
+builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.Name = "zbk";
     options.Cookie.HttpOnly = true;
-    options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None; // Добавьте эту строку
+    options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Lax; // Рекомендуется для безопасности
     options.LoginPath = "/Account/Login";
-    options.AccessDeniedPath = "/account/accessdenied";
+    options.AccessDeniedPath = "/Account/Login";
     options.SlidingExpiration = true;
 });
 
-services.AddAuthorization(x =>
+// Configure authorization policies
+builder.Services.AddAuthorization(options =>
 {
-    x.AddPolicy("HortArea", policy => { policy.RequireRole("admin"); });
+    options.AddPolicy("HortArea", policy => policy.RequireRole("admin"));
 });
-services.AddControllersWithViews(x =>
+
+// Register custom conventions
+builder.Services.AddControllersWithViews(options =>
 {
-    x.Conventions.Add(new AdminAreaAuthorization("Admin", "HortArea"));
+    options.Conventions.Add(new AdminAreaAuthorization("Hort", "HortArea"));
 });
-builder.Configuration.Bind("Project", new Config());
+
+// Add logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 var app = builder.Build();
 
-// Your existing application setup
-
-if (!app.Environment.IsDevelopment())
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    // The default HSTS value is 30 days. You may want to change this for production scenarios.
+}
+else
+{
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
-// Apply migrations and create the database if it doesn't exist
-
-
-// Connect authentication and authorization
 app.UseCookiePolicy();
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
@@ -92,4 +93,5 @@ app.UseEndpoints(endpoints =>
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
 });
+
 app.Run();

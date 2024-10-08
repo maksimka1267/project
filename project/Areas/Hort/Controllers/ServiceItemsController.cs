@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using project.Domain;
 using project.Domain.Entities;
@@ -7,7 +8,8 @@ using project.Service;
 namespace project.Areas.Hort.Controllers
 {
 	[Area("Hort")]
-	public class ServiceItemsController : Controller
+    [Authorize]
+    public class ServiceItemsController : Controller
 	{
 		private readonly DataManager dataManager;
 		private readonly IWebHostEnvironment hostingEnvironment;

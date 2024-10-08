@@ -121,40 +121,38 @@
     <!--Begin news -->
     <div class="du-news">
         <div class="container">
-            <h2 class="center">Новини</h2>
-
+            <h2 class="center"><a asp-controller="Home" asp-action="Event" asp-route-title="Новини">Новини</a></h2>
             <div class="row">
                 @{
-                    int k = 1;
-                    @foreach (ServiceItem item in ViewBag.ServiceItems)
+                    var recentNews = ((IEnumerable<ServiceItem>)ViewBag.ServiceItems)
+                    .Where(item => item.Father == "Новини")
+                    .OrderByDescending(item => item.DateAdded) // сортировка по дате создания
+                    .Take(3); // выбираем только 3 последние новости
+
+                    foreach (var item in recentNews)
                     {
-                        @if (item.Father == "Новини"&& k<=3)
-                        {
-                            k++;
-                            <div class="col-lg-4 col-md-4 col-sm-4">
-                                <div class="du-news-item wow fadeInRight" data-wow-delay="0.1s">
-                                    <figure><img class="img-responsive" src="~/img/photo/@item.TitleImagePath" alt=""></figure>
-                                    <div class="du-caption-box" style="background: #555a78 ">
-                                        <div class="du-caption">
-                                            <h3>@item.Title</h3>
-                                            <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id"><img src="~/img/more_arrow1.png" alt=""></a>
-                                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="du-news-item wow fadeInRight" data-wow-delay="0.1s">
+                                <figure><img class="img-responsive" src="~/img/photo/@item.TitleImagePath" alt=""></figure>
+                                <div class="du-caption-box" style="background: #555a78 ">
+                                    <div class="du-caption">
+                                        <h3>@item.Title</h3>
+                                        <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id"><img src="~/img/more_arrow1.png" alt=""></a>
                                     </div>
                                 </div>
                             </div>
-                        }
+                        </div>
                     }
                 }
-
-
             </div>
         </div>
     </div>
+
     <!--End news-->
     <!--Begin success story -->
     <div class="du-graduate-success-story">
         <div class="container">
-            <h2 class="center">Історії випускників</h2>
+            <h2 class="center">Актуальне</h2>
 
             <div class="row">
 
@@ -162,40 +160,20 @@
 
                     <div class="cbp-panel" style="max-width:980px">
                         <div id="grid-container" class="cbp-l-grid-slider-testimonials cbp-slider-edge">
-                            <div class="cbp-item graphic">
-                                <div class="du-best-student">
-                                    <figure><img src="img/kate_01.png" alt=""></figure>
-                                </div>
+                            @{
+                                var recentCurrent = ((IEnumerable<ServiceItem>)ViewBag.ServiceItems)
+                                .Where(item => item.Father == "Актуальне")
+                                .OrderByDescending(item => item.DateAdded); // сортировка по дате добавления
+                                foreach (var item in recentCurrent)
+                                {
+                                    <div class="cbp-item graphic">
+                                        <div class="cbp-l-grid-slider-testimonials-body">
+                                            <p>@Html.Raw(item.Text)</p>
+                                        </div>
 
-                                <div class="cbp-l-grid-slider-testimonials-body">
-                                    “Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu libero scelerisque ligula sagittis faucibus eget quis lacus. Suspendisse sodales sed orci ac feugiat”
-                                </div>
-                                <div class="cbp-l-grid-slider-testimonials-footer">
-                                    <p class="bodytext"><b>Name:</b> Titus<br><b>Degree:&nbsp;</b> History and French<br><b>University:</b> University of York</p>
-                                </div>
-                            </div>
-                            <div class="cbp-item web-design logos">
-                                <div class="du-best-student">
-                                    <figure><img src="img/chris.png" alt=""></figure>
-                                </div>
-                                <div class="cbp-l-grid-slider-testimonials-body">
-                                    “Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu libero scelerisque ligula sagittis faucibus eget quis lacus. Suspendisse sodales sed orci ac feugiat”
-                                </div>
-                                <div class="cbp-l-grid-slider-testimonials-footer">
-                                    <p class="bodytext"><b>Name:</b> Chris<br><b>Degree:&nbsp;</b> Mathematics<br><b>University:</b> Cardiff</p>
-                                </div>
-                            </div>
-                            <div class="cbp-item graphic logos">
-                                <div class="du-best-student">
-                                    <figure><img src="img/darren.png" alt=""></figure>
-                                </div>
-                                <div class="cbp-l-grid-slider-testimonials-body">
-                                    “Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu libero scelerisque ligula sagittis faucibus eget quis lacus. Suspendisse sodales sed orci ac feugiat”
-                                </div>
-                                <div class="cbp-l-grid-slider-testimonials-footer">
-                                    <p class="bodytext"><b>Name:</b> Darren<br><b>Degree:&nbsp;</b> Mathematics<br><b>University:</b> University of Manchester</p>
-                                </div>
-                            </div>
+                                    </div>
+                                }
+                            }
                         </div>
                     </div>
 
@@ -253,28 +231,31 @@
             <h2 class="center">Події:</h2>
             <div class="row">
                 @{
-                    int n = 1;
-                    @foreach (ServiceItem item in ViewBag.ServiceItems)
+                    var recentEvents = ((IEnumerable<ServiceItem>)ViewBag.ServiceItems)
+                    .Where(item => item.Father == "Події")
+                    .OrderByDescending(item => item.DateAdded) // сортировка по дате добавления
+                    .Take(3); // выбираем только 3 последние события
+
+                    foreach (var item in recentEvents)
                     {
-                        @if (item.Father == "Події"&& n<=3)
-                        {
-                            n++;
-                            <div class="col-lg-4 col-md-12 col-sm-12 du-news-date-box wow fadeInRight" data-wow-delay="0.2s">
-                                <div style="height:200px">
-                                    <h2>@item.DateAdded.ToString("dd MMMM", new System.Globalization.CultureInfo("en-US"))<br></h2>
-                                    <div class="du-date-short-des">
-                                        <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id"><h3 style="color:white;">@item.Title</h3></a>
-                                        <p>@item.Subtitle</p>
-                                    </div>
+                        <div class="col-lg-4 col-md-12 col-sm-12 du-news-date-box wow fadeInRight" data-wow-delay="0.2s">
+                            <div style="height:200px">
+                                <h2>@item.DateAdded.ToString("dd MMMM", new System.Globalization.CultureInfo("en-US"))<br></h2>
+                                <div class="du-date-short-des">
+                                    <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">
+                                        <h3 style="color:white;">@item.Title</h3>
+                                    </a>
+                                    <p>@item.Subtitle</p>
                                 </div>
                             </div>
-                            <div class="col-lg-8 col-md-12 col-sm-12 wow fadeInLeft">
-                                <figure><img src="~/img/page1_pic4.jpg" alt=""></figure>
-                            </div>
-                        }
+                        </div>
+                        <div class="col-lg-8 col-md-12 col-sm-12 wow fadeInLeft">
+                            <figure><img src="~/img/photo/@item.TitleImagePath" alt=""></figure>
+                        </div>
                     }
                 }
             </div>
+
             <a asp-controller="Home" asp-action="Event" asp-route-title="Події" class="btn-default du-common-property">Події</a>
         </div>
     </div>
@@ -282,12 +263,11 @@
     <!--Begin newsletter -->
     <div class="du-newsletter">
         <div class="container">
-            <h2 class="wow fadeInUp">Корисні посилання</h2>
                 <div >
-                    <a href="https://www.mon.gov.ua/?__cf_chl_rt_tk=aLbbEm4jbMBzAtPdw8mbHx7tJ55yI6THbZkWObPIk3Y-1708016521-0.0-3773"><img src="~/img/link/ministerstvo.png" alt=""></a>
-                    <a href="https://osvita.ua/"><img src="~/img/link/OsvitaUA_logo_1607.png" alt=""></a>
-                    <a href="http://osvita.zoda.gov.ua/"><img src="~/img/link/Департамент освіти і науки.png" alt=""></a>
-                    <a href="https://eo.gov.ua/"><img src="~/img/link/eologov2.jpg" alt=""></a>
+                    <a href="https://mon.gov.ua/" target="_blank"><img src="~/img/link/ministerstvo.png" alt=""></a>
+                    <a href="https://osvita.ua/" target="_blank"><img src="~/img/link/OsvitaUA_logo_1607.png" alt=""></a>
+                    <a href="http://osvita.zoda.gov.ua/" target="_blank"><img src="~/img/link/Департамент освіти і науки.png" alt=""></a>
+                    <a href="https://eo.gov.ua/" target="_blank"><img src="~/img/link/eologov2.jpg" alt=""></a>
                 </div>
         </div>
      </div>

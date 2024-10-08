@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using project.Models;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace project.Controllers
 {
@@ -21,28 +22,39 @@ namespace project.Controllers
 			ViewBag.returnUrl = returnUrl;
 			return View(new LoginViewModel());
 		}
-		[HttpPost]
-		[AllowAnonymous]
-		public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityUser user = await userManager.FindByNameAsync(model.UserName);
+                if (user != null)
+                {
+                    SignInResult result = await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+                    if (result.Succeeded)
+                    {
+                        return Redirect(returnUrl ?? "/");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Неправильный логин или пароль.");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("AccessDenied");
+                }
+            }
+            return View(model);
+        }
+
+
+        [AllowAnonymous]
+		public IActionResult AccessDenied()
 		{
-			//await signInManager.SignOutAsync(); // Примусовий вихід
-
-			if (ModelState.IsValid)
-			{
-				IdentityUser user = await userManager.FindByNameAsync(model.UserName);
-				if (user != null)
-				{
-					Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
-					if (result.Succeeded)
-					{
-						return Redirect(returnUrl ?? "/");
-					}
-				}
-				ModelState.AddModelError(nameof(LoginViewModel.UserName), "Невірний логін або пароль");
-			}
-			return View(model);
+			return View();
 		}
-
 		[Authorize]
         public async Task<IActionResult> Logout()
         {

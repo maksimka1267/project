@@ -23,5 +23,8 @@ namespace project.Domain.Entities
 
 		[Display(Name = "Чи є дочерні сторінки")]
 		public bool? Child { get; set; }
+
+        [Display(Name =" Порядок вивидення")]
+        public int Number {  get; set; }
 	}
 }
