@@ -3,24 +3,30 @@
     string strTitle = "Редагувати запис";
     ViewBag.Title = strTitle;
 }
-<script src="/assets/vendor/ckeditor/ckeditor.js"></script>
+
+<!-- Подключаем TinyMCE -->
+<script src="https://cdn.tiny.cloud/1/tiyj0l8xod12yl6wsxklu86x6zdz9xukjvmtn0zqe9xl3ya8/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.tiny.cloud/1/tiyj0l8xod12yl6wsxklu86x6zdz9xukjvmtn0zqe9xl3ya8/tinymce/6/langs/uk.js"></script> <!-- Украинский язык -->
+
 <style>
     .form-container {
-        max-width: 600px; /* Set your desired max-width here */
-        margin: 0 auto; /* Center the container */
+        max-width: 600px;
+        margin: 0 auto;
     }
 
     .div-box {
-        margin-bottom: 10px; /* Add some bottom margin to each div-box */
+        margin-bottom: 10px;
     }
 </style>
+
 <div class="form-container">
     <h2>@strTitle</h2>
     <div>
-        <form asp-area="Hort" asp-controller="ServiceItems" asp-action="Edit" method="post" enctype="multipart/form-data">
+        <form asp-area="Hort" asp-controller="ServiceItems" asp-action="Edit" method="post" enctype="multipart/form-data" onsubmit="return saveContent();">
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="DateAdded" />
-            <input type="hidden" asp-for="TitleImagePath" />
+            <input type="hidden" asp-for="TitleImage" />
+            <input type="hidden" asp-for="Text" id="text" />
             <div asp-validation-summary="All"></div>
             <div class="div-box">
                 <label asp-for="Title">Заголовок</label>
@@ -34,20 +40,20 @@
             </div>
             <div class="div-box">
                 <label asp-for="Text">Текст</label>
-                <textarea asp-for="Text"></textarea>
+                <textarea asp-for="Text" id="editor"></textarea>
                 <span asp-validation-for="Text"></span>
             </div>
             <div class="div-box">
-                <label asp-for="TitleImagePath">Шлях до зображення</label>
-                @if (!string.IsNullOrEmpty(Model.TitleImagePath))
-                {
-                    <img src="@Url.Content($"~/img/photo/{Model.TitleImagePath}")" alt="Current Image" style="max-width:50%" />
-                }
+                <label asp-for="TitleImage">Завантажити титульне зображення</label>
                 <input type="file" name="titleImageFile" id="titleImageFile" accept="image/*" />
-                <p>@Model.TitleImagePath</p>
             </div>
+            @if (Model.TitleImage != null && Model.TitleImage.Length > 0)
+            {
+                <div>
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.TitleImage)" class="img-preview" alt="Прев'ю зображення" style="width: 150px; height: auto;" />
+                </div>
+            }
 
-            <!-- Добавляем поле с выпадающим списком -->
             <div class="div-box">
                 <label asp-for="Father"></label>
                 <select asp-for="Father" asp-items="@(new SelectList(ViewBag.CodeWordsList))">
@@ -74,10 +80,26 @@
     </div>
 </div>
 
+<!-- Инициализация TinyMCE -->
 <script>
-    window.onload = function () {
-        var newCKEdit = CKEDITOR.replace('@Html.IdFor(x => x.Text)');
-        newCKEdit.updateElement();
+    tinymce.init({
+        selector: '#editor',
+        plugins: 'lists link image media table code',  // Добавляем плагин media
+        toolbar: 'undo redo | formatselect | fontselect fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | code',  // Добавляем кнопку media
+        fontsize_formats: '14pt 16pt 18pt 20pt 22pt 24pt 26pt 28pt 30pt',
+        font_formats: 'Times New Roman=times new roman,times,serif;',
+        branding: false,
+        language: 'uk',  // Устанавливаем украинский язык интерфейса
+        setup: function (editor) {
+            editor.on('change', function () {
+                document.getElementById('text').value = tinymce.get('editor').getContent();
+            });
+        },
+        media_live_embeds: true  // Позволяет загружать видео через вставку ссылок или с помощью тегов
+    });
+
+    function saveContent() {
+        document.getElementById('text').value = tinymce.get('editor').getContent();
+        return true;
     }
 </script>
-

@@ -50,26 +50,30 @@ namespace project.Controllers
 			ViewBag.Title = title;
 			return View();
 		}
-		public IActionResult Event(string title, int page = 1)
-		{
-			const int pageSize = 10; // Количество элементов на странице
-			var textFields = dataManager.TextFields.GetTextFields();
-			var serviceItems = dataManager.ServiceItems.GetServiceByFather(title)
-								.Skip((page - 1) * pageSize)
-								.Take(pageSize)
-								.ToList();
+        public IActionResult Event(string title, int page = 1)
+        {
+            const int pageSize = 10; // Количество элементов на странице
+            var textFields = dataManager.TextFields.GetTextFields();
 
-			ViewBag.TextFields = textFields;
-			ViewBag.ServiceItems = serviceItems;
-			ViewBag.Title = title;
+            // Сортируем статьи по убыванию даты добавления
+            var serviceItems = dataManager.ServiceItems.GetServiceByFather(title)
+                                .OrderByDescending(item => item.DateAdded) // сортировка по дате добавления
+                                .Skip((page - 1) * pageSize)
+                                .Take(pageSize)
+                                .ToList();
 
-			// Добавляем информацию о текущей странице и общем количестве страниц в ViewBag
-			ViewBag.CurrentPage = page;
-			ViewBag.TotalPages = (int)Math.Ceiling(dataManager.ServiceItems.GetTotalServiceItemCountByFather(title) / (double)pageSize);
+            ViewBag.TextFields = textFields;
+            ViewBag.ServiceItems = serviceItems;
+            ViewBag.Title = title;
 
-			return View();
-		}
-		public IActionResult Faculty(string title)
+            // Добавляем информацию о текущей странице и общем количестве страниц в ViewBag
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(dataManager.ServiceItems.GetTotalServiceItemCountByFather(title) / (double)pageSize);
+
+            return View();
+        }
+
+        public IActionResult Faculty(string title)
 		{
 			var textFields = dataManager.TextFields.GetTextFields();
 			var serviceItem = dataManager.ServiceItems.GetTitleByFather(title);

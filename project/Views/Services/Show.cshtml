@@ -1,4 +1,4 @@
-﻿@model ServiceItem;
+﻿@model ServiceItem
 <div class="dream-university-subpage">
 
     <!-- Begin breadcrumbs-->
@@ -25,7 +25,10 @@
                         <div class="col-md-9">
                             <h2>@Model.Title</h2>
                             <div class="box-container post">
-                                <img alt="image" class="media-object img-responsive" src="~/img/photo/@Model.TitleImagePath" style="max-width:300px; max-height:200px">
+                                <!-- Проверяем наличие изображения, если нет, выводим стандартное -->
+                                <img alt="image" class="media-object img-responsive"
+                                     src="data:image/jpeg;base64,@Convert.ToBase64String(Model.TitleImage)"
+                                     style="max-width:300px; max-height:200px">
                                 <div class="ptb-30">
                                     <div class="clearfix meta">
                                         <p class="serif italic pull-left">
@@ -47,17 +50,19 @@
                         <div class="col-md-3">
                             <div class="sidebar">
                                 <div class="sidebar-inner">
-                                    
-
+                                    @{
+            /*
                                     <div class="widget">
-                                        <a asp-controller="Home" asp-action="Event" asp-route-title="Новини"><h3 class="widget-title">Новини</h3></a>
+                                        <a asp-controller="Home" asp-action="Event" asp-route-title="Новини">
+                                            <h3 class="widget-title">Новини</h3>
+                                        </a>
 
                                         <div class="post-list">
                                             @{
                                                 var recentNews = ((IEnumerable<ServiceItem>)ViewBag.ServiceItem)
                                                 .Where(item => item.Father == "Новини")
                                                 .OrderByDescending(item => item.DateAdded)
-                                                .Take(3); // Вибір трьох останніх новин
+                                                .Take(3);
 
                                                 foreach (var item in recentNews)
                                                 {
@@ -65,63 +70,68 @@
                                                         <div class="sidebar-single-post-picture col-sm-12 col-md-4">
                                                             <div class="sidebar-single-post-picture-inner">
                                                                 <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id" class="sidebar-single-post-picture-target">
-                                                                    <img class="img-responsive" src="~/img/photo/@item.TitleImagePath" alt="">
+                                                                    <!-- Проверяем наличие изображения для новостей -->
+                                                                    <img class="img-responsive"
+                                                                         src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)"
+                                                                         alt="">
                                                                 </a>
                                                             </div><!-- /.sidebar-single-post-picture -->
                                                         </div><!-- /.sidebar-single-post-picture -->
 
                                                         <div class="sidebar-post-content-box col-sm-12 col-md-8">
-                                                            <h4 class="sidebar-single-post-title"><a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">@item.Title</a></h4><!-- /.sidebar-single-post-title -->
+                                                            <h4 class="sidebar-single-post-title">
+                                                                <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">@item.Title</a>
+                                                            </h4>
                                                             <div class="sidebar-post-content">
                                                                 <span class="sidebar-post-content-suffix">@item.DateAdded.ToString("dd.MM.yyyy", new System.Globalization.CultureInfo("en-US"))</span>
                                                             </div><!-- /.sidebar-post-content -->
                                                         </div><!-- /.sidebar-post-content-box -->
                                                     </div>
-
-                                                    <!-- /.sidebar-single-post -->
                                                 }
                                             }
                                         </div><!-- /.post-list -->
-
                                     </div><!-- /.widget -->
-
-
+                                    */}
                                     <div class="widget">
-                                        <a asp-controller="Home" asp-action="Event" asp-route-title="Події"><h3 class="widget-title">Остані події</h3></a>
+                                        <a asp-controller="Home" asp-action="Event" asp-route-title="Події">
+                                            <h3 class="widget-title">Події</h3>
+                                        </a>
 
                                         <div class="post-list">
                                             @{
-                                                var recentEvents = ((IEnumerable<ServiceItem>)ViewBag.ServiceItem)
+                                                var recentEvent = ((IEnumerable<ServiceItem>)ViewBag.ServiceItem)
                                                 .Where(item => item.Father == "Події")
                                                 .OrderByDescending(item => item.DateAdded)
-                                                .Take(3); // Вибір трьох останніх подій
+                                                .Take(3);
 
-                                                foreach (var item in recentEvents)
+                                                foreach (var item in recentEvent)
                                                 {
                                                     <div class="sidebar-single-post clearfix">
                                                         <div class="sidebar-single-post-picture col-sm-12 col-md-4">
                                                             <div class="sidebar-single-post-picture-inner">
                                                                 <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id" class="sidebar-single-post-picture-target">
-                                                                    <img class="img-responsive" src="~/img/photo/@item.TitleImagePath" alt="">
+                                                                    <!-- Проверяем наличие изображения для новостей -->
+                                                                    <img class="img-responsive"
+                                                                         src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)"
+                                                                         alt="">
                                                                 </a>
                                                             </div><!-- /.sidebar-single-post-picture -->
                                                         </div><!-- /.sidebar-single-post-picture -->
 
                                                         <div class="sidebar-post-content-box col-sm-12 col-md-8">
-                                                            <h4 class="sidebar-single-post-title"><a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">@item.Title</a></h4><!-- /.sidebar-single-post-title -->
+                                                            <h4 class="sidebar-single-post-title">
+                                                                <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">@item.Title</a>
+                                                            </h4>
                                                             <div class="sidebar-post-content">
                                                                 <span class="sidebar-post-content-suffix">@item.DateAdded.ToString("dd.MM.yyyy", new System.Globalization.CultureInfo("en-US"))</span>
                                                             </div><!-- /.sidebar-post-content -->
                                                         </div><!-- /.sidebar-post-content-box -->
                                                     </div>
-
-                                                    <!-- /.sidebar-single-post -->
                                                 }
                                             }
                                         </div><!-- /.post-list -->
 
-                                    </div><!-- /.widget popular property -->
-
+                                    </div><!-- /.widget -->
                                 </div><!-- /.sidebar-inner -->
                             </div><!-- /.sidebar -->
                         </div>

@@ -98,7 +98,7 @@
 												<!-- Team Box -->
 												<div class="team-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight; text-align:center">
 													<!-- Image -->
-													<img src="~/img/photo/@item.TitleImagePath" alt="" class="img-responsive" style="width:250px; height:220px" />
+													<img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt="" class="img-responsive" style="width:250px; height:220px" />
 													<!-- Heading -->
 													<h5>@item.Title</h5>
 													<h6>@item.Subtitle</h6>

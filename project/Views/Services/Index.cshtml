@@ -14,7 +14,7 @@
 							{
 								<article class="box excerpt">
 									<a asp-area="" asp-controller="Services" asp-action="Index" asp-route-id="@entity.Id" class="image left">
-										<img src="~/images/photo/@entity.TitleImagePath" />
+										<img src="data:image/jpeg;base64,@Convert.ToBase64String(entity.TitleImage)" />
 									</a>
 									<div>
 										<header>
