@@ -7,12 +7,10 @@ namespace project.Domain
 
         public ITextFieldsRepository TextFields { get; set; }
         public IServiceItemsRepository ServiceItems { get; set; }
-		public IPhotoFieldsReporitory PhotoFields { get; set; }
-		public DataManager(ITextFieldsRepository textFields, IServiceItemsRepository serviceItems, IPhotoFieldsReporitory photoFields)
+        public DataManager(ITextFieldsRepository textFields, IServiceItemsRepository serviceItems)
 		{
 			TextFields = textFields;
 			ServiceItems = serviceItems;
-			PhotoFields = photoFields;
 		}
 	}
 }

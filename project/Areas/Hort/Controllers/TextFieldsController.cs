@@ -14,24 +14,22 @@ namespace project.Areas.Hort.Controllers
             this.dataManager = dataManager;
         }
 
-        public IActionResult Edit(string codeWord)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            var entity = string.IsNullOrEmpty(codeWord)
-                ? new TextField()
-                : dataManager.TextFields.GetTextByCodeWord(codeWord);
-            var codeWordsList = dataManager.TextFields.GetTitleList();
+            var entity = id == default ? new TextField() : await dataManager.TextFields.GetTextFieldByIdAsync(id);
+            var codeWordsList = await dataManager.TextFields.GetDistinctTitlesAsync();
             ViewBag.CodeWordsList = codeWordsList;
             return View(entity);
         }
 
         [HttpPost]
-        public IActionResult Edit(TextField model)
+        public async Task<IActionResult> Edit(TextField model)
         {
             if (ModelState.IsValid)
             {
-                var codeWordsList = dataManager.TextFields.GetTitleList();
+                var codeWordsList = await dataManager.TextFields.GetDistinctTitlesAsync();
                 ViewBag.CodeWordsList = codeWordsList;
-                dataManager.TextFields.SaveTextField(model);
+                await dataManager.TextFields.SaveTextFieldAsync(model);
                 return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).CutController());
             }
 
@@ -41,9 +39,9 @@ namespace project.Areas.Hort.Controllers
 
 
         [HttpPost]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            dataManager.TextFields.DeleteTextField(id);
+            await dataManager.TextFields.DeleteTextFieldAsync(id);
             return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).CutController());
         }
     }

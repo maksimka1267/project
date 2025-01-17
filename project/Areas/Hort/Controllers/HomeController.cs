@@ -5,28 +5,24 @@ using project.Domain;
 namespace project.Areas.Hort.Controllers
 {
 	[Area("Hort")]
-	[Authorize]
+    [Authorize]
     public class HomeController : Controller
 	{
 		private readonly DataManager dataManager;
 
-		public HomeController(DataManager dataManager)
-		{
-			this.dataManager = dataManager;
-		}
 
-		public IActionResult Index()
-		{
-			var serviceItems = dataManager.ServiceItems.GetServiceItems();
-			var textFields = dataManager.TextFields.GetTextFields();
-			var photoFields = dataManager.PhotoFields.GetPhoto();
-			var title = dataManager.TextFields.GetTitleList();
-			// Помещаем данные в ViewBag
-			ViewBag.ServiceItems = serviceItems;
-			ViewBag.TextFields = textFields;
-			ViewBag.Name = title;
-			ViewBag.PhotoFields = photoFields;
-			return View();
-		}
-	}
+        public HomeController(DataManager dataManager)
+        {
+            this.dataManager = dataManager;
+        }
+        public async Task<IActionResult> Index()
+        {
+            ViewBag.TextFields = await dataManager.TextFields.GetAllTitlesAndIdsAsync();
+            ViewBag.ServiceItems = await dataManager.ServiceItems.GetAllTitlesAndIdsAsync();
+            //ViewBag.PhotoFields = dataManager.PhotoFields.GetPhoto();
+            ViewBag.Name = await dataManager.TextFields.GetDistinctTitlesAsync();
+            return View();
+        }
+
+    }
 }

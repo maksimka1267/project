@@ -1,101 +1,80 @@
 ﻿<div class="dream-university-subpage">
 
-	<!-- Begin breadcrumbs-->
-	<div class="du-page-header du-breadcrumbs">
-		<div class="container">
-			<div class="row">
-				
-			</div>
-		</div>
-	</div>
-	<!-- End breadcrumbs-->
-	<!-- Begin Event -->
-	<div class="du-subpage-content">
-		<div class="du-event">
+    <!-- Begin breadcrumbs-->
+    <div class="du-page-header du-breadcrumbs">
+        <div class="container">
+            <div class="row"></div>
+        </div>
+    </div>
+    <!-- End breadcrumbs-->
+    <!-- Begin Event -->
+    <div class="du-subpage-content">
+        <div class="du-event">
 
-			<!-- Begin choose us -->
-			<section class="event ptb-50">
+            <!-- Begin choose us -->
+            <section class="event ptb-50">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <h2>@ViewBag.Title</h2>
+                        </div>
+                    </div>
 
-				<div class="container">
-					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 text-center">
-							<h2>@ViewBag.Title</h2>
-						</div>
-					</div>
+                    <section class="du-all-event">
+                        @if (ViewBag.ServiceItems != null)
+                        {
+                            foreach (ServiceItem item in ViewBag.ServiceItems)
+                            {
+                                <div class="row" style="height:310px">
+                                    <!-- Left column -->
+                                    <div class="col-lg-4 col-md-12 col-sm-12 du-news-date-box wow fadeInRight" data-wow-delay="0.2s">
+                                        <div>
+                                            <h2 style="color:white; text-transform:none">
+                                                @item.Title
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <!-- Right column (Image) -->
+                                    <div class="col-lg-8 col-md-12 col-sm-12 wow fadeInLeft">
+                                        <figure>
+                                            <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">
+                                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt="" style="width:100%;max-height:250px">
+                                            </a>
+                                        </figure>
+                                    </div>
+                                </div>
 
-					<section class="du-all-event">
+                            }
+                        }
+                    </section>
+                </div>
 
-						
-							@{
-								@foreach (ServiceItem item in ViewBag.ServiceItems)
-								{
-									@if (item.Father == ViewBag.Title)
-									{
-										<div class="row" style="height:310px">
-											<div class="col-lg-4 col-md-12 col-sm-12 du-news-date-box wow fadeInRight" data-wow-delay="0.2s">
-												<div>
-													<div>
-													<h2>
-														@item.Title<br />
-														@if (item.Father == "Події")
-														{
-															<img src="img/else.jpg" alt="">
-														}
-														else
-														{
-																			<img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt="" style="height:240px; width:770px;">
-														}
-													</h2>
-													</div>
-												</div>
-											</div>
-											<div class="col-lg-8 col-md-12 col-sm-12 wow fadeInLeft">
-											<a asp-controller="Services" asp-action="Index" asp-route-Id="@item.Id"><figure>
-													@if (item.Father == "Новини")
-													{
-														<img src="~/img/else.jpg" alt="" style="height:240px; width:770px;">
-													}
-													else
-													{
-														<img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt="" style="height:240px; width:770px;">
-													}
-											</figure></a>
-											</div>
-										</div>
-									}
-								}
-							}
-					</section>
+                <!-- Pagination -->
+                <div class="blog-page-pagination">
+                    <ul class="pagination pagination-sm">
+                        @if (ViewBag.CurrentPage > 1)
+                        {
+                            <li><a href="@Url.Action("Event", new { title = ViewBag.Title, page = 1 })" aria-label="First Page">«</a></li>
+                            <li><a href="@Url.Action("Event", new { title = ViewBag.Title, page = ViewBag.CurrentPage - 1 })" aria-label="Previous Page">&lt;</a></li>
+                        }
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li class="@(i == ViewBag.CurrentPage ? "active" : "")">
+                                <a href="@Url.Action("Event", new { title = ViewBag.Title, page = i })">@i</a>
+                            </li>
+                        }
+                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                        {
+                            <li><a href="@Url.Action("Event", new { title = ViewBag.Title, page = ViewBag.CurrentPage + 1 })" aria-label="Next Page">&gt;</a></li>
+                            <li><a href="@Url.Action("Event", new { title = ViewBag.Title, page = ViewBag.TotalPages })" aria-label="Last Page">»</a></li>
+                        }
+                    </ul>
+                </div>
+            </section>
+            <!-- End Event -->
 
-				</div>
-				<div class="blog-page-pagination">
-					<!-- Pagination Small -->
-					<ul class="pagination pagination-sm">
-						@if (ViewBag.CurrentPage > 1)
-						{
-							<li><a href="@Url.Action("Event", new { title = ViewBag.Title, page = 1 })">«</a></li>
-							<li><a href="@Url.Action("Event", new { title = ViewBag.Title, page = ViewBag.CurrentPage - 1 })">&lt;</a></li>
-						}
-						@for (int i = 1; i <= ViewBag.TotalPages; i++)
-						{
-							<li class="@(i == ViewBag.CurrentPage ? "active" : "")"><a href="@Url.Action("Event", new { title = ViewBag.Title, page = i })">@i</a></li>
-						}
-						@if (ViewBag.CurrentPage < ViewBag.TotalPages)
-						{
-							<li><a href="@Url.Action("Event", new { title = ViewBag.Title, page = ViewBag.CurrentPage + 1 })">&gt;</a></li>
-							<li><a href="@Url.Action("Event", new { title = ViewBag.Title, page = ViewBag.TotalPages })">»</a></li>
-						}
-					</ul>
-				</div>
-			</section>
-			<!-- End event -->
-
-
-
-
-		</div><!-- /.du-event -->
-	</div><!-- /.du-subpage content -->
-	<!-- End Evnet -->
-
+        </div>
+    </div>
+    <!-- End Evnet -->
 
 </div>

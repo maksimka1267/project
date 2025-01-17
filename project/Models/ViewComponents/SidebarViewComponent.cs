@@ -13,9 +13,10 @@ namespace project.Models.ViewComponents
             this.dataManager = dataManager;
         }
 
-        public Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            return Task.FromResult((IViewComponentResult) View("Default", dataManager.ServiceItems.GetServiceItems()));
+            var serviceItems = await dataManager.ServiceItems.GetServiceItemsAsync();
+            return View("Default", serviceItems);
         }
     }
 }

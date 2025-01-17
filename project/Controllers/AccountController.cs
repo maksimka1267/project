@@ -16,12 +16,12 @@ namespace project.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
-		[AllowAnonymous]
-		public IActionResult Login(string returnUrl)
-		{
-			ViewBag.returnUrl = returnUrl;
-			return View(new LoginViewModel());
-		}
+        [AllowAnonymous]
+        public IActionResult Login(string returnUrl)
+        {
+            ViewBag.returnUrl = returnUrl;
+            return View(new LoginViewModel());
+        }
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
@@ -38,7 +38,7 @@ namespace project.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, "Неправильный логин или пароль.");
+                        ModelState.AddModelError(string.Empty, "Невірний логін чи пароль.");
                     }
                 }
                 else
@@ -51,11 +51,11 @@ namespace project.Controllers
 
 
         [AllowAnonymous]
-		public IActionResult AccessDenied()
-		{
-			return View();
-		}
-		[Authorize]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();

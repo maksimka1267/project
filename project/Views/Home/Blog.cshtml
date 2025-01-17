@@ -28,35 +28,32 @@
 						<div class="row">
 							@foreach(ServiceItem item in ViewBag.ServiceItems)
 							{
-								@if (item.Father == ViewBag.Title)
-								{
-									<div class="col-lg-4 col-md-4 col-sm-4">
-										<div class="du-news-item wow fadeInLeft">
-											<figure><img class="img-responsive" src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" title="Designed by vectorjuice / Freepik"></figure>
-											<div class="du-caption-box" style="background: #555a78 ">
-												<div class="du-caption" style="height:150px">
+								<div class="col-lg-4 col-md-4 col-sm-4">
+									<div class="du-news-item wow fadeInLeft">
+										<figure><img class="img-responsive" src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" title="Designed by vectorjuice / Freepik"></figure>
+										<div class="du-caption-box" style="background: #555a78 ">
+											<div class="du-caption" style="height:150px">
 
-													@if (item.MakePage == true)
-													{
-														<a asp-controller="Services" asp-action="Index" asp-route-Id="@item.Id"><h3>@item.Title</h3></a>
-													}
-													else
-													{
-														<a href="@item.Subtitle" target="_blank"><h3>@item.Title</h3></a>
-													}
-                                                </div>
 												@if (item.MakePage == true)
 												{
-													<a asp-controller="Services" asp-action="Index" asp-route-Id="@item.Id"><img src="~/img/more_arrow1.png" alt=""></a>
+													<a asp-controller="Services" asp-action="Index" asp-route-Id="@item.Id"><h3>@item.Title</h3></a>
 												}
 												else
 												{
-													<a href="@item.Subtitle" target="_blank"><img src="~/img/more_arrow1.png" alt=""></a>
+													<a href="@item.Subtitle" target="_blank"><h3>@item.Title</h3></a>
 												}
 											</div>
+											@if (item.MakePage == true)
+											{
+												<a asp-controller="Services" asp-action="Index" asp-route-Id="@item.Id"><img src="~/img/more_arrow1.png" alt=""></a>
+											}
+											else
+											{
+												<a href="@item.Subtitle" target="_blank"><img src="~/img/more_arrow1.png" alt=""></a>
+											}
 										</div>
 									</div>
-								}
+								</div>
 							}
 						</div>
 
@@ -64,11 +61,6 @@
 
 				</div>
 			</section>
-			<!-- End event -->
-
-
-
-
 		</div><!-- /.du-event -->
 	</div><!-- /.du-subpage content -->
 	<!-- End Evnet -->

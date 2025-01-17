@@ -10,9 +10,10 @@ namespace project.Models.ViewComponents
 		{
 			this.dataManager = dataManager;
 		}
-		public Task<IViewComponentResult> InvokeAsync()
+		public async Task<IViewComponentResult> InvokeAsync()
 		{
-			return Task.FromResult((IViewComponentResult)View("Default", dataManager.TextFields.GetTextFields()));
-		}
+            var textFields = await dataManager.TextFields.GetTextFieldsAsync();  // Используем await
+            return View("Default", textFields);  // Передаем данные в представление
+        }
 	}
 }

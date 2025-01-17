@@ -10,23 +10,16 @@ namespace project.Controllers
         {
             this.dataManager = dataManager;
         }
-        public IActionResult Index(Guid id)
+        public async Task<IActionResult> Index(Guid id)
         {
-            var serviceItems = dataManager.ServiceItems.GetServiceItems();
-            ViewBag.ServiceItem = serviceItems;
-            if (id != default)
-            {
-                return View("Show", dataManager.ServiceItems.GetServiceItemById(id));
-            }
-
-            //ViewBag.TextField = dataManager.TextFields.GetTextByCodeWord("PageServices");
-            return View(dataManager.ServiceItems.GetServiceItems());
+            ViewBag.News = await dataManager.ServiceItems.GetTop3ServiceByFatherAsync("Події");
+            return View("Show",await dataManager.ServiceItems.GetServiceItemByIdAsync(id));
         }
-        public IActionResult Header(string title)
+        public async Task<IActionResult> Header(string title)
         {
-            var serviceItems = dataManager.ServiceItems.GetServiceItems();
+            var serviceItems =await dataManager.ServiceItems.GetServiceItemsAsync();
             ViewBag.ServiceItem = serviceItems;
-            return View("Show", dataManager.ServiceItems.GetServiceItemByTitle(title));
+            return View("Show",await dataManager.ServiceItems.GetServiceItemByTitleAsync(title));
         }
     }
 }

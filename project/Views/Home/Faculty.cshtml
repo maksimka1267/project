@@ -26,11 +26,8 @@
 										int i = 2;
 										@foreach(TextField item in ViewBag.TextFields)
 										{
-											@if (item.Father == ViewBag.Title)
-											{
-												<li><a href="#@i"><strong>@item.Title</strong></a></li>
-												i++;
-											}
+											<li><a href="#@i"><strong>@item.Title</strong></a></li>
+											i++;
 										}
 									}
 								</ul>
@@ -44,69 +41,66 @@
 					int k = 2;
 					@foreach (TextField item in ViewBag.TextFields)
 					{
-						@if (item.Father == ViewBag.Title)
+						if (k % 2 == 0)
 						{
-							if (k % 2 == 0)
-							{
-								<section class="civil-engineering pb-50">
-									<div id="@k" class="container">
+							<section class="civil-engineering pb-50">
+								<div id="@k" class="container">
 
-										<div class="du-civil pt-20">
-											<div class="row">
-												<div class="col-md-8 wow fadeInLeft">
-													<h3 class="text-left">@item.Title</h3>
-													<p>@Html.Raw(item.Text)</p>
-													@if (item.Child == true)
-													{
-														<h4>Більше інформації:</h4>
-														<div class="du-faculty-name">
-															<ul class="du-choose-list">
-																@foreach(var service in ViewBag.ServiceItems)
-																{
-																	<li><a asp-controller="Services" asp-action="Header" asp-route-title="@service"><strong>@service</strong></a></li>
-																}
-															</ul>
-														</div>
-													}
-													
-												</div>
+									<div class="du-civil pt-20">
+										<div class="row">
+											<div class="col-md-8 wow fadeInLeft">
+												<h3 class="text-left">@item.Title</h3>
+												<p>@Html.Raw(item.Text)</p>
+												@if (item.Child == true)
+												{
+													<h4>Більше інформації:</h4>
+													<div class="du-faculty-name">
+														<ul class="du-choose-list">
+															@foreach (var service in ViewBag.ServiceItems)
+															{
+																<li><a asp-controller="Services" asp-action="Header" asp-route-title="@service"><strong>@service</strong></a></li>
+															}
+														</ul>
+													</div>
+												}
+
 											</div>
 										</div>
 									</div>
-								</section>
-								k++;
-							}
-							else if (k % 2 != 0)
-							{
-								
-								<section class="electronic-engineering du-section-ash ptb-50">
-									<div id="@k" class="container">
+								</div>
+							</section>
+							k++;
+						}
+						else if (k % 2 != 0)
+						{
 
-										<div class="du-civil">
-											<div class="row">
-												<div class="col-md-8 wow fadeInLeft">
-													<h3 class="text-left">@item.Title</h3>
-													<p>@Html.Raw(item.Text)</p>
-													@if (item.Child == true)
-													{
-														<h4>Більше інформації:</h4>
-														<div class="du-faculty-name">
-															<ul class="du-choose-list">
-																@foreach (var service in ViewBag.ServiceItems)
-																{
-																	<li><a asp-controller="Services" asp-action="Header" asp-route-title="@service"><strong>@service</strong></a></li>
-																}
-															</ul>
-														</div>
-													}
-												</div>
+							<section class="electronic-engineering du-section-ash ptb-50">
+								<div id="@k" class="container">
+
+									<div class="du-civil">
+										<div class="row">
+											<div class="col-md-8 wow fadeInLeft">
+												<h3 class="text-left">@item.Title</h3>
+												<p>@Html.Raw(item.Text)</p>
+												@if (item.Child == true)
+												{
+													<h4>Більше інформації:</h4>
+													<div class="du-faculty-name">
+														<ul class="du-choose-list">
+															@foreach (var service in ViewBag.ServiceItems)
+															{
+																<li><a asp-controller="Services" asp-action="Header" asp-route-title="@service"><strong>@service</strong></a></li>
+															}
+														</ul>
+													</div>
+												}
 											</div>
 										</div>
 									</div>
+								</div>
 
-								</section>
-								k++;
-							}
+							</section>
+							k++;
 						}
 					}
 				}

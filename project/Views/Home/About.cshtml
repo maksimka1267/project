@@ -21,13 +21,10 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 text-center">
-							@foreach (ServiceItem item in ViewBag.ServiceItems)
+							@foreach (ServiceItem item in ViewBag.ServiceAbout)
 							{
-								@if(item.Father=="Про коледж")
-								{
-									<h2>@item.Title</h2>
-									<p>@Html.Raw(item.Text)</p>
-								}
+								<h2>@item.Title</h2>
+								<p>@Html.Raw(item.Text)</p>
 							}
 
 						</div>
@@ -47,28 +44,25 @@
 									<div class="row pt-20">
 										@{
 											int k = 1;
-											@foreach (ServiceItem item in ViewBag.ServiceItems)
+											@foreach (ServiceItem item in ViewBag.ServiceCommission)
 											{
-												@if (item.Father == "Циклові комісії")
+												if (k <= 3)
 												{
-													if (k <= 3)
-													{
-														<div class="col-md-6">
-															<ul class="du-choose-list">
-																<li><a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">@item.Title</a></li>
-															</ul>
-														</div>
-													}
-													else
-													{
-														<div class="col-md-6">
-															<ul class="du-choose-list">
-																<li><a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">@item.Title</a></li>
-															</ul>
-														</div>
-													}
-													k++;
+													<div class="col-md-6">
+														<ul class="du-choose-list">
+															<li><a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">@item.Title</a></li>
+														</ul>
+													</div>
 												}
+												else
+												{
+													<div class="col-md-6">
+														<ul class="du-choose-list">
+															<li><a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">@item.Title</a></li>
+														</ul>
+													</div>
+												}
+												k++;
 											}
 											
 										}
@@ -90,22 +84,19 @@
 					<div class="container">
 						<div class="row">
 							<h2 class="text-center">Адміністрація</h2>
-							@foreach (ServiceItem item in ViewBag.ServiceItems)
+							@foreach (var item in ViewBag.ServiceAdmin)
 								{
-								@if (item.Father == "Адміністрація")
-										{
-											<div class="col-md-3 col-sm-6">
-												<!-- Team Box -->
-												<div class="team-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight; text-align:center">
-													<!-- Image -->
-													<img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt="" class="img-responsive" style="width:250px; height:220px" />
-													<!-- Heading -->
-													<h5>@item.Title</h5>
-													<h6>@item.Subtitle</h6>
+								<div class="col-md-3 col-sm-6">
+									<!-- Team Box -->
+									<div class="team-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight; text-align:center">
+										<!-- Image -->
+										<img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt="" class="img-responsive" style="display: block; width: 80%; margin: 0 auto;" />
+										<!-- Heading -->
+										<h5>@item.Title</h5>
+										<h6>@item.Subtitle</h6>
 
-												</div>
-											</div>
-										}
+									</div>
+								</div>
 								}
 							
 						</div>
@@ -118,19 +109,16 @@
 				<div class="container">
 
 					<div class="row">
-						<h2 class="text-center">Профсоюзна спілка</h2>
+						<h2 class="text-center">Профспілкова організація</h2>
 
 						<div class="principal-photo col-md-2 wow fadeInLeft">
 							<img class="img-responsive" src="~/img/logo.png" alt="image">
 						</div>
-						@foreach(ServiceItem item1 in ViewBag.ServiceItems)
+						@foreach (ServiceItem item1 in ViewBag.ServiceTrade)
 						{
-							@if(item1.Father=="Профсоюзна спілка")
-							{
-								<div class="col-md-10 wow fadeInRight">
-									<p>@Html.Raw(item1.Text)</p>
-								</div>
-							}
+							<div class="col-md-10 wow fadeInRight">
+								<p>@Html.Raw(item1.Text)</p>
+							</div>
 						}
 					</div>
 				</div>

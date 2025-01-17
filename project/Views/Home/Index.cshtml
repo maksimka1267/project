@@ -22,27 +22,22 @@
             <div class="row">
                     @{
                         int i = 1;
-                        @foreach(ServiceItem item in ViewBag.ServiceItems)
-                            {
-                            @if (item.Father == "Вступнику")
-                            {
-                                @if (item.ShowBanners == true)
-                                {
-                                    <div class="col-lg-4 col-md-4 col-sm-4 wow fadeIn" data-wow-delay="0.1s">
-                                        <div class="du-feature-box maxheight">
-                                            <div class="badge"><img src="~/img/page1_icon@($"{i}").png" alt=""></div>
-                                            <div class="du-caption-box">
-                                                <div class="du-caption">
-                                                    <p class="title">@item.Title</p>
-                                                    <p>@item.Subtitle </p>
-                                                    <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id" class="btn-default du-common-property">Вся інформація</a>
-                                                </div>
-                                            </div>
+                        @foreach (var item in ViewBag.ServiceEntrant)
+                        {
+
+                            <div class="col-lg-4 col-md-4 col-sm-4 wow fadeIn" data-wow-delay="0.1s">
+                                <div class="du-feature-box maxheight">
+                                    <div class="badge"><img src="~/img/page1_icon@($"{i}").png" alt=""></div>
+                                    <div class="du-caption-box">
+                                        <div class="du-caption">
+                                            <p class="title">@item.Title</p>
+                                            <p>@item.Subtitle </p>
+                                            <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id" class="btn-default du-common-property">Вся інформація</a>
                                         </div>
                                     </div>
-                                    i++;
-                                }
-                            }
+                                </div>
+                            </div>
+                            i++;
                         }
                     }
             </div>
@@ -51,19 +46,14 @@
     <!-- End feature -->
     <div class="du-current-news center">
         <div class="container">
-            <h2 class="center">Оголошення:</h2>
+            <h2 class="center">Події:</h2>
             <div class="row">
                 @{
-                    // Преобразуем динамический ViewBag.ServiceItems в типизированную коллекцию
-                    var recentAdvent = ((IEnumerable<ServiceItem>)ViewBag.ServiceItems)
-                    .Where(item => item.Father == "Оголошення") // Фильтрация по типу "Новини"
-                    .OrderByDescending(item => item.DateAdded) // Сортировка по дате добавления
-                    .Take(3); // Выбираем только 3 последние новости
-                    foreach (ServiceItem item in recentAdvent)
+                    foreach (ServiceItem item in ViewBag.ServiceEvents)
                     {
                         <div class="col-lg-4 col-md-12 col-sm-12 du-news-date-box wow fadeInRight" data-wow-delay="0.2s">
-                            <div style="height:200px">
-                                <h2>@item.DateAdded.ToString("dd MMMM", new System.Globalization.CultureInfo("en-US"))<br></h2>
+                            <div>
+                                <h2 style="color:white; text-transform:none">@item.DateAdded.ToString("dd MMMM", new System.Globalization.CultureInfo("en-US"))<br></h2>
                                 <div class="du-date-short-des">
                                     <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">
                                         <h3 style="color:white;">@item.Title</h3>
@@ -73,39 +63,40 @@
                             </div>
                         </div>
                         <div class="col-lg-8 col-md-12 col-sm-12 wow fadeInLeft">
-                            <figure><img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt=""></figure>
+                            <figure>
+                                <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">
+                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt="" style="width:100%">
+                                </a>
+                            </figure>
                         </div>
                     }
                 }
             </div>
+            <a asp-controller="Home" asp-action="Event" asp-route-title="Події" class="btn-default du-common-property">Події</a>
         </div>
     </div>
+
     <!--Begin our faculty-->
     <div class="our-faculty">
         <div class="container">
             <h2 class="center">Спеціальності</h2>
 
             <div class="row">
-                @foreach(ServiceItem item in ViewBag.ServiceItems)
+                @foreach (ServiceItem item in ViewBag.ServiceSpecialties)
                 {
-                    @if (item.Father == "Спеціальності")
-                    {
-                        <div class="col-lg-4 col-md-4 col-sm-4" style="height:280px">
-                            <div class="du-faculty-item wow fadeInRight animated" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInRight;">
-                                <figure>
-                                    <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id"><img class="img-responsive" style="width:370px; height:200px" src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt="image"></a>
-                                </figure>
-                                <div class="du-caption-box">
-                                    <div class="du-caption">
-                                        <h4><a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">@item.Title</a></h4>
-                                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4" style="height:280px">
+                        <div class="du-faculty-item wow fadeInRight animated" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInRight;">
+                            <figure>
+                                    <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id"><img class="img-responsive" style="display: block; width: 80%; margin: 0 auto;" src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt="image"></a>
+                            </figure>
+                            <div class="du-caption-box">
+                                <div class="du-caption">
+                                    <h4><a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">@item.Title</a></h4>
                                 </div>
                             </div>
                         </div>
-                    }
-                    
+                    </div>
                 }
-                
             </div>
         </div>
     </div>
@@ -116,74 +107,32 @@
             <h2 class="center">Студенту</h2>
 
             <div class="row">
-                @foreach(ServiceItem item in ViewBag.ServiceItems)
+                @foreach (var item in ViewBag.ServiceStudent)
                 {
-                    @if (item.Father == "Студенту")
-                    {
-                        @if (item.ShowBanners == true)
-                        {
-                            <div class="col-lg-4 col-md-4 col-sm-4">
-                                <div class="du-faculty-item wow fadeInRight" data-wow-delay="0.1s">
-                                    <figure><img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt=""></figure>
-                                    <div class="du-caption-box">
-                                        <div class="du-caption">
-                                            <h3>@item.Title</h3>
-                                            @if (item.MakePage == true)
-                                            {
-                                                <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id" class="btn-default du-common-property">Вся інформація</a>
-                                            }
-                                            else
-                                            {
-                                                <a href="@item.Subtitle" target="_blank" class="btn-default du-common-property">Вся інформація</a>
-                                            }
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="du-faculty-item wow fadeInRight" data-wow-delay="0.1s">
+                            <figure><img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt=""></figure>
+                            <div class="du-caption-box">
+                                <div class="du-caption">
+                                    <h3>@item.Title</h3>
+                                    @if (item.MakePage == true)
+                                    {
+                                        <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id" class="btn-default du-common-property">Вся інформація</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@item.Subtitle" target="_blank" class="btn-default du-common-property">Вся інформація</a>
+                                    }
 
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
-                        }
-                        
-                    }
+                        </div>
+                    </div>
                 }
             </div>
         </div>
     </div>
     <!--End for student-->
-    <!--Begin news -->
-    <div class="du-current-news center">
-        <div class="container">
-            <h2 class="center">Події:</h2>
-            <div class="row">
-                @{
-                    // Преобразуем динамический ViewBag.ServiceItems в типизированную коллекцию
-                    var recentEvents = ((IEnumerable<ServiceItem>)ViewBag.ServiceItems)
-                    .Where(item => item.Father == "Події") // Фильтрация по типу "Новини"
-                    .OrderByDescending(item => item.DateAdded) // Сортировка по дате добавления
-                    .Take(3); // Выбираем только 3 последние новости
-                    foreach (ServiceItem item in recentEvents)
-                    {
-                        <div class="col-lg-4 col-md-12 col-sm-12 du-news-date-box wow fadeInRight" data-wow-delay="0.2s">
-                            <div style="height:200px">
-                                <h2>@item.DateAdded.ToString("dd MMMM", new System.Globalization.CultureInfo("en-US"))<br></h2>
-                                <div class="du-date-short-des">
-                                    <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">
-                                        <h3 style="color:white;">@item.Title</h3>
-                                    </a>
-                                    <p>@item.Subtitle</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-8 col-md-12 col-sm-12 wow fadeInLeft">
-                            <figure><img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt="" style="height:233px; width:750px"></figure>
-                        </div>
-                    }
-                }
-            </div>
-            <a asp-controller="Home" asp-action="Event" asp-route-title="Події" class="btn-default du-common-property">Події</a>
-        </div>
-    </div>
-
-    <!--End news-->
     <!--Begin success story -->
     <div class="du-graduate-success-story">
         <div class="container">
@@ -193,13 +142,10 @@
 
                 <div class="cbp-l-slider-testimonials-wrap">
 
-                    <div class="cbp-panel" style="max-width:980px">
+                    <div class="cbp-panel" style="max-width:150%;display: block; margin: 0 auto;">
                         <div id="grid-container" class="cbp-l-grid-slider-testimonials cbp-slider-edge">
                             @{
-                                var recentCurrent = ((IEnumerable<ServiceItem>)ViewBag.ServiceItems)
-                                .Where(item => item.Father == "Актуальне")
-                                .OrderByDescending(item => item.DateAdded); // сортировка по дате добавления
-                                foreach (var item in recentCurrent)
+                                foreach (var item in ViewBag.ServiceCurrent)
                                 {
                                     <div class="cbp-item graphic">
                                         <div class="cbp-l-grid-slider-testimonials-body">
@@ -260,38 +206,6 @@
         </div>
     </div>
     <!--End scholarship-->
-    <!--Begin current news -->
-    <!--
-    <div class="du-news">
-        <div class="container">
-            <h2 class="center"><a asp-controller="Home" asp-action="Event" asp-route-title="Новини">Новини</a></h2>
-            <div class="row">
-                @{/*
-                    var recentNews = ((IEnumerable<ServiceItem>)ViewBag.ServiceItems)
-                    .Where(item => item.Father == "Новини")
-                    .OrderByDescending(item => item.DateAdded) // сортировка по дате создания
-                    .Take(3); // выбираем только 3 последние новости
-
-                    foreach (var item in recentNews)
-                    {
-                        <div class="col-lg-4 col-md-4 col-sm-4">
-                            <div class="du-news-item wow fadeInRight" data-wow-delay="0.1s">
-                                <figure><img class="img-responsive" src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt=""></figure>
-                                <div class="du-caption-box" style="background: #555a78 ">
-                                    <div class="du-caption">
-                                        <h3>@item.Title</h3>
-                                        <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id"><img src="~/img/more_arrow1.png" alt=""></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                */}
-            </div>
-        </div>
-    </div>
-     -->
-    <!--End current news -->
     <!--Begin newsletter -->
     <div class="du-newsletter">
         <div class="container">

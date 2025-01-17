@@ -9,28 +9,28 @@ using project.Service;
 
 namespace project.Areas.Hort.Controllers
 {
-	[Area("Hort")]
-	[Authorize]
-	public class ServiceItemsController : Controller
-	{
-		private readonly DataManager dataManager;
-		private readonly IWebHostEnvironment hostingEnvironment;
-		private readonly ILogger<ServiceItemsController> _logger;
+    [Area("Hort")]
+    [Authorize]
+    public class ServiceItemsController : Controller
+    {
+        private readonly DataManager dataManager;
+        private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly ILogger<ServiceItemsController> _logger;
 
-		public ServiceItemsController(DataManager dataManager, IWebHostEnvironment hostingEnvironment, ILogger<ServiceItemsController> logger)
-		{
-			this.dataManager = dataManager;
-			this.hostingEnvironment = hostingEnvironment;
-			_logger = logger;
-		}
+        public ServiceItemsController(DataManager dataManager, IWebHostEnvironment hostingEnvironment, ILogger<ServiceItemsController> logger)
+        {
+            this.dataManager = dataManager;
+            this.hostingEnvironment = hostingEnvironment;
+            _logger = logger;
+        }
 
-		public IActionResult Edit(Guid id)
-		{
-			var entity = id == default ? new ServiceItem() : dataManager.ServiceItems.GetServiceItemById(id);
-			var codeWordsList = dataManager.TextFields.GetTitleList();
-			ViewBag.CodeWordsList = codeWordsList;
-			return View(entity);
-		}
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var entity = id == default ? new ServiceItem() : await dataManager.ServiceItems.GetServiceItemByIdAsync(id);
+            var codeWordsList = await dataManager.TextFields.GetDistinctTitlesAsync();
+            ViewBag.CodeWordsList = codeWordsList;
+            return View(entity);
+        }
         [HttpPost]
         public async Task<IActionResult> Edit(ServiceItem model, IFormFile? titleImageFile)
         {
@@ -54,8 +54,9 @@ namespace project.Areas.Hort.Controllers
                         model.TitleImage = await System.IO.File.ReadAllBytesAsync(defaultImagePath);
                     }
                 }
-                ViewBag.CodeWordsList = dataManager.TextFields.GetTitleList();
-                dataManager.ServiceItems.SaveServiceItem(model);
+                var codeWordsList = await dataManager.TextFields.GetDistinctTitlesAsync();
+                ViewBag.CodeWordsList = codeWordsList;
+                await dataManager.ServiceItems.SaveServiceItemAsync(model);
                 return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).CutController());
             }
 
@@ -63,10 +64,10 @@ namespace project.Areas.Hort.Controllers
         }
 
         [HttpPost]
-		public IActionResult Delete(Guid id)
-		{
-			dataManager.ServiceItems.DeleteServiceItem(id);
-			return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).CutController());
-		}
-	}
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await dataManager.ServiceItems.DeleteServiceItemAsync(id);
+            return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).CutController());
+        }
+    }
 }

@@ -1,92 +1,78 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.FileSystemGlobbing;
-using project.Areas.Hort.Controllers;
 using project.Domain;
 using project.Domain.Entities;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace project.Controllers
 {
-	public class HomeController : Controller
-	{
+    public class HomeController : Controller
+    {
         private readonly DataManager dataManager;
 
-		public HomeController(DataManager dataManager)
+        public HomeController(DataManager dataManager)
         {
             this.dataManager = dataManager;
         }
-		public IActionResult Index()
-		{
-			var textFields = dataManager.TextFields.GetTextFields();
-			var serviceItem = dataManager.ServiceItems.GetServiceItems();
-            ViewBag.TextFields = textFields;
-			ViewBag.ServiceItems = serviceItem;
-            return View();
-		}
-		public IActionResult About()
-		{
-			var textFields = dataManager.TextFields.GetTextFields();
-			var serviceItem = dataManager.ServiceItems.GetServiceItems();
-			ViewBag.TextFields = textFields;
-			ViewBag.ServiceItems = serviceItem;
-			return View();
-		}
-		public IActionResult Admissions(string title)
-		{
-			var textFields = dataManager.TextFields.GetTextFields();
-			var serviceItem = dataManager.ServiceItems.GetServiceByFather(title);
-			ViewBag.TextFields = textFields;
-			ViewBag.ServiceItems = serviceItem;
-			ViewBag.Title = title;
-			return View();
-		}
-		public IActionResult Blog(string title)
-		{
-			var textFields = dataManager.TextFields.GetTextFields();
-			var serviceItem = dataManager.ServiceItems.GetServiceByFather(title);
-			ViewBag.TextFields = textFields;
-			ViewBag.ServiceItems = serviceItem;
-			ViewBag.Title = title;
-			return View();
-		}
-        public IActionResult Event(string title, int page = 1)
+
+        public async Task<IActionResult> Index()
         {
-            const int pageSize = 10; // Количество элементов на странице
-            var textFields = dataManager.TextFields.GetTextFields();
+            ViewBag.ServiceEvents = await dataManager.ServiceItems.GetTop3ServiceByFatherAsync("Події");
+            ViewBag.ServiceEntrant = await dataManager.ServiceItems.GetServiceByFatherWithBannerAsync("Вступнику");
+            ViewBag.ServiceStudent = await dataManager.ServiceItems.GetServiceByFatherWithBannerAsync("Студенту");
+            ViewBag.ServiceSpecialties = await dataManager.ServiceItems.GetServiceByFatherAsync("Спеціальності");
+            ViewBag.ServiceCurrent = await dataManager.ServiceItems.GetServiceByFatherAsync("Актуальне");
+            return View();
+        }
 
-            // Сортируем статьи по убыванию даты добавления
-            var serviceItems = dataManager.ServiceItems.GetServiceByFather(title)
-                                .OrderByDescending(item => item.DateAdded) // сортировка по дате добавления
-                                .Skip((page - 1) * pageSize)
-                                .Take(pageSize)
-                                .ToList();
+        public async Task<IActionResult> About(string father)
+        {
+            ViewBag.ServiceAbout = await dataManager.ServiceItems.GetServiceByFatherAsync("Про колледж");
+            ViewBag.ServiceCommission = await dataManager.ServiceItems.GetServiceByFatherAsync("Циклові комісії");
+            ViewBag.ServiceAdmin = await dataManager.ServiceItems.GetServiceByFatherAsync("Адміністрація");
+            ViewBag.ServiceTrade = await dataManager.ServiceItems.GetServiceByFatherAsync("Профспілкова організація");
+            return View();
+        }
+        public async Task<IActionResult> Admissions(string title)
+        {
 
-            ViewBag.TextFields = textFields;
-            ViewBag.ServiceItems = serviceItems;
+            ViewBag.TextFields = await dataManager.TextFields.GetTextByTitleAsync(title);
+            ViewBag.ServiceItems = await dataManager.ServiceItems.GetServiceByFatherAsync(title);
             ViewBag.Title = title;
+            return View();
+        }
 
-            // Добавляем информацию о текущей странице и общем количестве страниц в ViewBag
+
+        public async Task<IActionResult> Blog(string title)
+        {
+            ViewBag.ServiceItems = await dataManager.ServiceItems.GetServiceByFatherAsync(title);
+            ViewBag.Title = title;
+            return View();
+        }
+
+        public async Task<IActionResult> Event(string title, int page = 1)
+        {
+            const int pageSize = 10;
+            var father = await dataManager.TextFields.GetTextByTitleAsync(title);
+            var totalItems = await dataManager.ServiceItems.GetTotalServiceItemCountByFatherAsync(father.Title);
+            ViewBag.ServiceItems = await dataManager.ServiceItems.GetPagedServiceItemsByFatherAsync(father.Title, page, pageSize);
+            ViewBag.Title = title;
             ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = (int)Math.Ceiling(dataManager.ServiceItems.GetTotalServiceItemCountByFather(title) / (double)pageSize);
+            ViewBag.TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
 
             return View();
         }
 
-        public IActionResult Faculty(string title)
-		{
-			var textFields = dataManager.TextFields.GetTextFields();
-			var serviceItem = dataManager.ServiceItems.GetTitleByFather(title);
-			ViewBag.TextFields = textFields;
-			ViewBag.ServiceItems = serviceItem;
-			ViewBag.Title = title;
-			return View();
-		}
-        public IActionResult Gallery(string title)
-        {
-			IQueryable<PhotoField> allPhotos = dataManager.PhotoFields.GetPhoto(); // Получаем все фотографии из базы данных
-			return View(allPhotos);
-		}
 
+
+        public async Task<IActionResult> Faculty(string title)
+        {
+            var page = await dataManager.TextFields.GetTextByTitleAsync(title);
+            ViewBag.TextFields = await dataManager.TextFields.GetTextByFatherAsync(page.Title);
+            ViewBag.ServiceItems = await dataManager.ServiceItems.GetServiceByFatherAsync(page.Title);
+            ViewBag.Title = title;
+            return View();
+        }
     }
 }

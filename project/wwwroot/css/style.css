@@ -991,7 +991,9 @@ footer {
 	.comment-form textarea {
 		width: 556px !important;
 	}
-
+	h1{
+		font-size:12px;
+	}
 	.comment-form input.form-control {
 		width: 356px;
 	}
@@ -1015,9 +1017,11 @@ footer {
 		}
 
 	.welcome-message h1 {
-		font-size: 28px;
+		font-size: 24px;
 	}
-
+	h1 {
+		font-size: 12px;
+	}
 	.du-feature-box {
 		margin: 0 0 93px 0;
 	}
@@ -1041,9 +1045,12 @@ a:focus {
 .du-featured-text {
 	position: absolute;
 	top: 25%;
-	text-align: center;
-	left: 10%;
+	text-align: left;
+	left: -25%;
 	z-index: 99;
+	min-width: 150%;
+	min-height: 18%;
+	background-color: rgba(255, 255, 255, 0.5);
 }
 
 .du-featured-photo img {

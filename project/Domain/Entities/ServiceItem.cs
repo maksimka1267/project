@@ -2,17 +2,19 @@
 
 namespace project.Domain.Entities
 {
-	public class ServiceItem : EntityBase
+	public class ServiceItem
 	{
+		public Guid Id { get; set; }
+
 		[Required(ErrorMessage = "Заповніть назву розділу")]
 		[Display(Name = "Назва розділу(заголовок)")]
-		public override string? Title { get; set; }
+		public string? Title { get; set; }
 
 		[Display(Name = "Короткий опис")]
-		public virtual string? Subtitle { get; set; }
+		public string? Subtitle { get; set; }
 
 		[Display(Name = "Повний опис")]
-		public override string? Text { get; set; }
+		public string? Text { get; set; }
 
 		[Display(Name = "Батьківська сторінка")]
 		[Required(ErrorMessage = "Обов'язково вибиріть батьківську сторінку")]
@@ -26,5 +28,9 @@ namespace project.Domain.Entities
 
 		[Display(Name = "Створювати сторінки для цієї статті?")]
 		public bool MakePage { get; set; }
-	}
+
+        [DataType(DataType.Time)]
+        public DateTime DateAdded { get; set; } = DateTime.Now;
+
+    }
 }

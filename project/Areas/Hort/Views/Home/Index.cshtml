@@ -15,7 +15,7 @@
                         {
                             <h4>@title</h4>
                         <div>
-                            @foreach (var entity in ViewBag.ServiceItems as IQueryable<ServiceItem>)
+                            @foreach (var entity in ViewBag.ServiceItems)
                             {
                                 @if (entity.Father == title)
                                 {
@@ -46,42 +46,18 @@
                     <div>
                         <h3>Редагувати сторінки сайту</h3>
                         <div>
-                            @foreach (var entity in ViewBag.TextFields as IQueryable<TextField>)
+                            @foreach (var entity in ViewBag.TextFields)
                             {
                                 <div>
-                                    <a asp-area="Hort" asp-controller="TextFields" asp-action="Edit" asp-route-codeWord="@entity.CodeWord">редагувати</a>
+                                    <a asp-area="Hort" asp-controller="TextFields" asp-action="Edit" asp-route-id="@entity.Id">редагувати</a>
                                     |
                                     <form style="display: inline-block;" id="form-@entity.Id" asp-area="Hort" asp-controller="TextFields" asp-action="Delete" method="post">
                                         <input type="hidden" name="id" value="@entity.Id">
                                         <a href="#" onclick="document.getElementById('form-@entity.Id').submit();">видалити</a>
                                     </form>
                                     |
-                                    <a asp-area="" asp-controller="Home" asp-action="@entity.View" asp-route-codeWord="@entity.CodeWord">
+                                    <a asp-area="" asp-controller="Home" asp-action="@entity.View" asp-route-id="@entity.Id">
                                         @($"{entity.Title}")
-                                    </a>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h3>Фотографії</h3>
-                    <div>
-                        <a asp-area="Hort" asp-controller="PhotoFields" asp-action="Edit" asp-route-id="">Додати фотографію</a>
-                    </div>
-                    <div>
-                        <h3>Додавання фотографії</h3>
-                        <div>
-                        @foreach (var entity in ViewBag.PhotoFields as IQueryable<PhotoField>)
-                            {
-                                <div>
-                                    <form style="display: inline-block;" id="form-@entity.Id" asp-area="Hort" asp-controller="PhotoFields" asp-action="Delete" method="post">
-                                        <input type="hidden" name="id" value="@entity.Id">
-                                        <a href="#" onclick="document.getElementById('form-@entity.Id').submit();">видалити</a>
-                                    </form>
-                                    |
-                                    <a href="#">
-                                        @entity.Title
                                     </a>
                                 </div>
                             }

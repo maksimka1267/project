@@ -1,6 +1,4 @@
-﻿@model IQueryable<ServiceItem>
-
-<div id="main-wrapper">
+﻿<div id="main-wrapper">
 	<div class="wrapper style3">
 		<div class="inner">
 			<div class="container">
@@ -10,11 +8,11 @@
 						<section class="box article-list">
 							<h2 class="icon fa-file-alt">Новини</h2>
 
-							@foreach (ServiceItem entity in Model)
+							@foreach (var entity in ViewBag.ServiceItem)
 							{
 								<article class="box excerpt">
 									<a asp-area="" asp-controller="Services" asp-action="Index" asp-route-id="@entity.Id" class="image left">
-										<img src="data:image/jpeg;base64,@Convert.ToBase64String(entity.TitleImage)" />
+										<img src="data:image/jpeg;base64,@Convert.ToBase64String(entity.Image)" />
 									</a>
 									<div>
 										<header>
