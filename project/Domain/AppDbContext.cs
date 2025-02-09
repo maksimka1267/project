@@ -10,8 +10,11 @@ namespace project.Domain
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         
-        public DbSet<TextField> TextFields { get; set; }
-        public DbSet<ServiceItem> ServiceItems { get; set; }
+        public DbSet<PageItem> PageItems { get; set; }
+        public DbSet<ArticleItem> ArticleItems { get; set; }
+        public DbSet<TextModel> TextModels { get; set; }
+        public DbSet<PhotoModel> PhotoModels { get; set; }
+        public DbSet<NewsItem> News { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

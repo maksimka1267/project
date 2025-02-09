@@ -21,7 +21,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 text-center">
-							@foreach (ServiceItem item in ViewBag.ServiceAbout)
+							@foreach (var item in ViewBag.ServiceAbout)
 							{
 								<h2>@item.Title</h2>
 								<p>@Html.Raw(item.Text)</p>
@@ -44,7 +44,7 @@
 									<div class="row pt-20">
 										@{
 											int k = 1;
-											@foreach (ServiceItem item in ViewBag.ServiceCommission)
+											@foreach (var item in ViewBag.ServiceCommission)
 											{
 												if (k <= 3)
 												{
@@ -90,7 +90,7 @@
 									<!-- Team Box -->
 									<div class="team-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight; text-align:center">
 										<!-- Image -->
-										<img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt="" class="img-responsive" style="display: block; width: 80%; margin: 0 auto;" />
+										<img src="@Url.Action("GetImage", "Services", new { id = item.TitleImage })" alt="" class="img-responsive" style="display: block; width: 80%; margin: 0 auto;" />
 										<!-- Heading -->
 										<h5>@item.Title</h5>
 										<h6>@item.Subtitle</h6>
@@ -114,10 +114,10 @@
 						<div class="principal-photo col-md-2 wow fadeInLeft">
 							<img class="img-responsive" src="~/img/logo.png" alt="image">
 						</div>
-						@foreach (ServiceItem item1 in ViewBag.ServiceTrade)
+						@foreach (var item in ViewBag.ServiceTrade)
 						{
 							<div class="col-md-10 wow fadeInRight">
-								<p>@Html.Raw(item1.Text)</p>
+								<p>@Html.Raw(item.Text)</p>
 							</div>
 						}
 					</div>

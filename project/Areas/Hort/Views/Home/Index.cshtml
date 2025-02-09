@@ -2,22 +2,22 @@
     ViewData["Title"] = "Панель Адміністратора";
 }
 <div style="margin-left:50px">
-<h2>@ViewData["Title"]</h2>
-<div id="main-wrapper">
+    <h2>@ViewData["Title"]</h2>
+    <div id="main-wrapper">
         <div class="inner">
+            <div>
+                <h3>Статті</h3>
                 <div>
-                    <h3>Статті</h3>
-                    <div>
-                        <a asp-area="Hort" asp-controller="ServiceItems" asp-action="Edit" asp-route-id="">Створити стату</a>
-                    </div>
-                    <div>
-                        @foreach(var title in ViewBag.Name)
-                        {
-                            <h4>@title</h4>
+                    <a asp-area="Hort" asp-controller="ServiceItems" asp-action="Edit" asp-route-id="">Створити стату</a>
+                </div>
+                <div>
+                    @foreach(var title in ViewBag.PageName)
+                    {
+                        <h4>@title.Text</h4>
                         <div>
                             @foreach (var entity in ViewBag.ServiceItems)
                             {
-                                @if (entity.Father == title)
+                                if (entity.Father.ToString().ToUpper() == title.Value)
                                 {
                                     <div>
                                         <a asp-area="Hort" asp-controller="ServiceItems" asp-action="Edit" asp-route-id="@entity.Id">редагувати</a>
@@ -30,7 +30,13 @@
                                         <a asp-area="" asp-controller="Services" asp-action="Index" asp-route-id="@entity.Id">
                                             @($"{entity.Title}")
                                         </a>
+                                        |
+                                        <a asp-area="Hort" asp-controller="ServiceItems" asp-action="ToggleActive" asp-route-id="@entity.Id">
+                                            @(entity.Active ? "Деактивувати" : "Активувати")
+                                        </a>
                                     </div>
+                                }else{
+                                    Console.WriteLine(entity.Father.ToString().ToUpper());
                                 }
                                 
                             }
@@ -38,6 +44,44 @@
                         }
                     </div>
                 </div>
+            <div>
+                <h3>Новини</h3>
+                <div>
+                    <a asp-area="Hort" asp-controller="NewsItems" asp-action="Edit" asp-route-id="">Створити новину</a>
+                </div>
+                <div>
+                    @foreach (var title in ViewBag.ArticleName)
+                    {
+                        <h4>@title.Text</h4>
+                        <div>
+                            @foreach (var entity in ViewBag.NewsItems)
+                            {
+                                if (entity.Father.ToString().ToUpper() == title.Value)
+                                {
+                                    <div>
+                                        <a asp-area="Hort" asp-controller="NewsItems" asp-action="Edit" asp-route-id="@entity.Id">редагувати</a>
+                                        |
+                                        <form style="display: inline-block;" id="form-@entity.Id" asp-area="Hort" asp-controller="NewsItems" asp-action="Delete" method="post">
+                                            <input type="hidden" name="id" value="@entity.Id">
+                                            <a href="#" onclick="document.getElementById('form-@entity.Id').submit();">видалити</a>
+                                        </form>
+                                        |
+                                        <a asp-area="" asp-controller="NewsItems" asp-action="Index" asp-route-id="@entity.Id">
+                                            @($"{entity.Title}")
+                                        </a>
+                                        |
+                                        <a asp-area="Hort" asp-controller="NewsItems" asp-action="ToggleActive" asp-route-id="@entity.Id">
+                                            @(entity.Active ? "Деактивувати" : "Активувати")
+                                        </a>
+
+                                    </div>
+                                }
+
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
                 <div>
                     <h3>Сторінки сайту</h3>
                     <div>

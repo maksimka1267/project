@@ -1,14 +1,14 @@
 ﻿<div class="du-banner-area">
-	<div class="du-featured-photo">
-		<img class="img-responsive" src="img/mama7.jpg" alt="featured photo">
-		<div class="du-featured-text">
-			<!--welcome-message-->
-			<header class="welcome-message text-center">
+    <div class="du-featured-photo">
+        <img class="img-responsive" src="img/mama7.jpg" alt="featured photo">
+        <div class="du-featured-text">
+            <!--welcome-message-->
+            <header class="welcome-message text-center">
                 <h1><span class="rotate" style="color:#555a78"> Запорізький будівельний, фаховий коледж, Для тих - хто будує майбутнє</span></h1>
-			</header>
-			<!--welcome-message end-->
-		</div>
-	</div>
+            </header>
+            <!--welcome-message end-->
+        </div>
+    </div>
 </div>
 <div class="clear"></div>
 
@@ -20,26 +20,26 @@
     <div class="du-feature">
         <div class="container">
             <div class="row">
-                    @{
-                        int i = 1;
-                        @foreach (var item in ViewBag.ServiceEntrant)
-                        {
+                @{
+                    int i = 1;
+                    @foreach (var item in ViewBag.ServiceEntrant)
+                    {
 
-                            <div class="col-lg-4 col-md-4 col-sm-4 wow fadeIn" data-wow-delay="0.1s">
-                                <div class="du-feature-box maxheight">
-                                    <div class="badge"><img src="~/img/page1_icon@($"{i}").png" alt=""></div>
-                                    <div class="du-caption-box">
-                                        <div class="du-caption">
-                                            <p class="title">@item.Title</p>
-                                            <p>@item.Subtitle </p>
-                                            <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id" class="btn-default du-common-property">Вся інформація</a>
-                                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 wow fadeIn" data-wow-delay="0.1s">
+                            <div class="du-feature-box maxheight">
+                                <div class="badge"><img src="~/img/page1_icon@($"{i}").png" alt=""></div>
+                                <div class="du-caption-box">
+                                    <div class="du-caption">
+                                        <p class="title">@item.Title</p>
+                                        <p>@item.Subtitle </p>
+                                        <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id" class="btn-default du-common-property">Вся інформація</a>
                                     </div>
                                 </div>
                             </div>
-                            i++;
-                        }
+                        </div>
+                        i++;
                     }
+                }
             </div>
         </div>
     </div>
@@ -49,13 +49,13 @@
             <h2 class="center">Події:</h2>
             <div class="row">
                 @{
-                    foreach (ServiceItem item in ViewBag.ServiceEvents)
+                    foreach (var item in ViewBag.ServiceEvents)
                     {
                         <div class="col-lg-4 col-md-12 col-sm-12 du-news-date-box wow fadeInRight" data-wow-delay="0.2s">
                             <div>
                                 <h2 style="color:white; text-transform:none">@item.DateAdded.ToString("dd MMMM", new System.Globalization.CultureInfo("en-US"))<br></h2>
                                 <div class="du-date-short-des">
-                                    <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">
+                                    <a asp-controller="NewsItems" asp-action="Index" asp-route-id="@item.Id">
                                         <h3 style="color:white;">@item.Title</h3>
                                     </a>
                                     <p>@item.Subtitle</p>
@@ -64,8 +64,8 @@
                         </div>
                         <div class="col-lg-8 col-md-12 col-sm-12 wow fadeInLeft">
                             <figure>
-                                <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">
-                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt="" style="width:100%">
+                                <a asp-controller="NewsItems" asp-action="Index" asp-route-id="@item.Id">
+                                    <img src="@Url.Action("GetImage", "Services", new { id = item.TitleImage })" alt="" style="width:100%">
                                 </a>
                             </figure>
                         </div>
@@ -82,12 +82,17 @@
             <h2 class="center">Спеціальності</h2>
 
             <div class="row">
-                @foreach (ServiceItem item in ViewBag.ServiceSpecialties)
+                @foreach (var item in ViewBag.ServiceSpecialties)
                 {
                     <div class="col-lg-4 col-md-4 col-sm-4" style="height:280px">
                         <div class="du-faculty-item wow fadeInRight animated" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInRight;">
                             <figure>
-                                    <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id"><img class="img-responsive" style="display: block; width: 80%; margin: 0 auto;" src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt="image"></a>
+                                <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">
+                                    <img class="img-responsive"
+                                    style="display: block; width: 80%; margin: 0 auto;"
+                                    src="@Url.Action("GetImage", "Services", new { id = item.TitleImage })"
+                                    alt="image">
+                                </a>
                             </figure>
                             <div class="du-caption-box">
                                 <div class="du-caption">
@@ -111,7 +116,9 @@
                 {
                     <div class="col-lg-4 col-md-4 col-sm-4">
                         <div class="du-faculty-item wow fadeInRight" data-wow-delay="0.1s">
-                            <figure><img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" alt=""></figure>
+                            <figure>
+                                <img src="@Url.Action("GetImage", "Services", new { id = item.TitleImage })" alt="" style="width:100%">
+                            </figure>
                             <div class="du-caption-box">
                                 <div class="du-caption">
                                     <h3>@item.Title</h3>
@@ -137,29 +144,21 @@
     <div class="du-graduate-success-story">
         <div class="container">
             <h2 class="center">Актуальне</h2>
-
             <div class="row">
-
                 <div class="cbp-l-slider-testimonials-wrap">
-
                     <div class="cbp-panel" style="max-width:150%;display: block; margin: 0 auto;">
                         <div id="grid-container" class="cbp-l-grid-slider-testimonials cbp-slider-edge">
-                            @{
-                                foreach (var item in ViewBag.ServiceCurrent)
-                                {
-                                    <div class="cbp-item graphic">
-                                        <div class="cbp-l-grid-slider-testimonials-body">
-                                            <p>@Html.Raw(item.Text)</p>
-                                        </div>
-
+                            @foreach (string item in ViewBag.ServiceCurrent)
+                            {
+                                <div class="cbp-item graphic">
+                                    <div class="cbp-l-grid-slider-testimonials-body">
+                                        <p>@Html.Raw(@item)</p>
                                     </div>
-                                }
+                                </div>
                             }
                         </div>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>

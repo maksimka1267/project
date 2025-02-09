@@ -11,13 +11,13 @@ namespace project.Areas.Hort.Controllers
 {
     [Area("Hort")]
     [Authorize]
-    public class ServiceItemsController : Controller
+    public class NewsItemsController : Controller
     {
         private readonly DataManager dataManager;
         private readonly IWebHostEnvironment hostingEnvironment;
-        private readonly ILogger<ServiceItemsController> _logger;
+        private readonly ILogger<NewsItemsController> _logger;
 
-        public ServiceItemsController(DataManager dataManager, IWebHostEnvironment hostingEnvironment, ILogger<ServiceItemsController> logger)
+        public NewsItemsController(DataManager dataManager, IWebHostEnvironment hostingEnvironment, ILogger<NewsItemsController> logger)
         {
             this.dataManager = dataManager;
             this.hostingEnvironment = hostingEnvironment;
@@ -26,41 +26,40 @@ namespace project.Areas.Hort.Controllers
 
         public async Task<IActionResult> Edit(Guid id)
         {
-            ArticleItemDto model;
+            NewsItemDto model;
 
             if (id == default)
             {
-                model = new ArticleItemDto();
+                model = new NewsItemDto();
             }
             else
             {
-                var entity = await dataManager.ServiceItems.GetServiceItemByIdAsync(id);
+                var entity = await dataManager.NewsItems.GetNewsItemByIdAsync(id);
                 var textEntity = await dataManager.TextModels.GetTextModelByIdAsync(entity.Text);
                 var photoEntity = await dataManager.PhotoItems.GetPhotoModelByIdAsync(entity.TitleImage);
-                model = new ArticleItemDto
+                model = new NewsItemDto
                 {
                     Id = entity.Id,
-                    Title=entity.Title,
-                    TitleImage=photoEntity.ImageData,
-                    Father=entity.Father,
-                    MakePage=entity.MakePage,
-                    ShowBanners=entity.ShowBanners,
-                    Subtitle=entity.Subtitle,
-                    DateAdded= DateTime.Now,
+                    Title = entity.Title,
+                    TitleImage = photoEntity.ImageData,
+                    Father = entity.Father,
+                    MakePage = entity.MakePage,
+                    ShowBanners = entity.ShowBanners,
+                    Subtitle = entity.Subtitle,
+                    DateAdded = DateTime.Now,
                     Text = textEntity?.Text // Если текст есть — загружаем, иначе оставляем null
                 };
             }
-
-            ViewBag.CodeWordsList = await dataManager.TextFields.GetDistinctTitlesWithIdsAsync();
+            ViewBag.CodeWordsList = await dataManager.ServiceItems.GetDistinctTitlesWithIdsAsync();
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(ArticleItemDto model, IFormFile? titleImageFile)
+        public async Task<IActionResult> Edit(NewsItemDto model, IFormFile? titleImageFile)
         {
             if (ModelState.IsValid)
             {
-                var test = await dataManager.ServiceItems.GetServiceItemByIdAsync(model.Id);
-                ArticleItem article = new ArticleItem();
+                var test = await dataManager.NewsItems.GetNewsItemByIdAsync(model.Id);
+                NewsItem article = new NewsItem();
                 if (test == null)
                 {
                     article.Title = model.Title;
@@ -75,7 +74,7 @@ namespace project.Areas.Hort.Controllers
                     article = test;
                 }
                 // Если новое изображение загружено, сохраняем его
-                if (titleImageFile != null)
+                if(titleImageFile != null)
                 {
                     using (var memoryStream = new MemoryStream())
                     {
@@ -98,7 +97,7 @@ namespace project.Areas.Hort.Controllers
                         article.TitleImage = photo.Id;
                     }
                 }
-                var codeWordsList = await dataManager.TextFields.GetDistinctTitlesWithIdsAsync();
+                var codeWordsList = await dataManager.ServiceItems.GetDistinctTitlesWithIdsAsync();
                 ViewBag.CodeWordsList = codeWordsList;
                 TextModel text = new TextModel
                 {
@@ -106,7 +105,7 @@ namespace project.Areas.Hort.Controllers
                 };
                 await dataManager.TextModels.SaveTextModelAsync(text);
                 article.Text = text.Id;
-                await dataManager.ServiceItems.SaveServiceItemAsync(article);
+                await dataManager.NewsItems.SaveNewsItemAsync(article);
                 return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).CutController());
             }
 
@@ -116,23 +115,22 @@ namespace project.Areas.Hort.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var page = await dataManager.ServiceItems.GetServiceItemByIdAsync(id);
+            var page = await dataManager.NewsItems.GetNewsItemByIdAsync(id);
             if (page.Text != Guid.Empty)
             {
                 await dataManager.TextModels.DeleteTextModelAsync(page.Text);
             }
-            if(page.TitleImage!= Guid.Empty)
+            if (page.TitleImage != Guid.Empty)
             {
                 await dataManager.PhotoItems.DeletePhotoModelAsync(page.TitleImage);
             }
-            await dataManager.ServiceItems.DeleteServiceItemAsync(id);
+            await dataManager.NewsItems.DeleteNewsItemAsync(id);
             return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).CutController());
         }
         public async Task<IActionResult> ToggleActive(Guid id)
         {
-            await dataManager.ServiceItems.ToggleActiveAsync(id); // Вызываем метод репозитория
+            await dataManager.NewsItems.ToggleActiveAsync(id); // Вызываем метод репозитория
             return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).CutController()); // Перенаправляем обратно на список статей
         }
-
     }
 }

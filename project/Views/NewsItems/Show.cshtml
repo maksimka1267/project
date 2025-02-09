@@ -1,4 +1,4 @@
-﻿@model ArticleItem
+﻿@model NewsItem
 <div class="dream-university-subpage">
 
     <!-- Begin breadcrumbs-->
@@ -62,7 +62,7 @@
                                                     <div class="sidebar-single-post clearfix">
                                                         <div class="sidebar-single-post-picture col-sm-12 col-md-4">
                                                             <div class="sidebar-single-post-picture-inner">
-                                                                <a asp-controller="NewsItems" asp-action="Index" asp-route-id="@item.Id" class="sidebar-single-post-picture-target">
+                                                                <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id" class="sidebar-single-post-picture-target">
                                                                     <!-- Проверяем наличие изображения для новостей -->
                                                                     <img class="img-responsive"
                                                                          src="@Url.Action("GetImage", "Services", new { id = item.TitleImage })"
@@ -73,7 +73,7 @@
 
                                                         <div class="sidebar-post-content-box col-sm-12 col-md-8">
                                                             <h4 class="sidebar-single-post-title">
-                                                                <a asp-controller="NewsItems" asp-action="Index" asp-route-id="@item.Id">@item.Title</a>
+                                                                <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">@item.Title</a>
                                                             </h4>
                                                             <div class="sidebar-post-content">
                                                                 <span class="sidebar-post-content-suffix">@item.DateAdded.ToString("dd.MM.yyyy", new System.Globalization.CultureInfo("en-US"))</span>

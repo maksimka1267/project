@@ -1,17 +1,17 @@
-﻿@model TextField
+﻿@model PageItemDto
 
-<!-- Подключаем TinyMCE -->
+<!-- Підключаємо TinyMCE -->
 <script src="https://cdn.tiny.cloud/1/tiyj0l8xod12yl6wsxklu86x6zdz9xukjvmtn0zqe9xl3ya8/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-<script src="https://cdn.tiny.cloud/1/tiyj0l8xod12yl6wsxklu86x6zdz9xukjvmtn0zqe9xl3ya8/tinymce/6/langs/uk.js"></script> <!-- Украинский язык -->
+<script src="https://cdn.tiny.cloud/1/tiyj0l8xod12yl6wsxklu86x6zdz9xukjvmtn0zqe9xl3ya8/tinymce/6/langs/uk.js"></script> <!-- Українська мова -->
 
 <style>
     .form-container {
-        max-width: 600px; /* Set your desired max-width here */
-        margin: 0 auto; /* Center the container */
+        max-width: 600px;
+        margin: 0 auto;
     }
 
     .div-box {
-        margin-bottom: 10px; /* Add some bottom margin to each div-box */
+        margin-bottom: 10px;
     }
 </style>
 
@@ -21,30 +21,30 @@
         <form asp-area="Hort" asp-controller="TextFields" asp-action="Edit" method="post" enctype="multipart/form-data" onsubmit="return saveContent();">
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="DateAdded" />
-            <input type="hidden" asp-for="Text" id="text" />
+            <input type="hidden" asp-for="Text" id="text" /> <!-- Приховане поле для тексту -->
+
             <div asp-validation-summary="All"></div>
+
             <div class="div-box">
                 <label asp-for="Title">Назва</label>
                 <input asp-for="Title" />
                 <span asp-validation-for="Title"></span>
             </div>
+
             <div class="div-box">
                 <label asp-for="Text">Текст</label>
-                <div id="editor"></div> <!-- Здесь будет Quill редактор -->
+                <textarea asp-for="Text" id="editor"></textarea> <!-- Використовуємо textarea -->
                 <span asp-validation-for="Text"></span>
             </div>
-            <div class="div-box">
-                <label asp-for="CodeWord"></label>
-                <input asp-for="CodeWord" placeholder="Назва тільки англійською" />
-                <span asp-validation-for="CodeWord"></span>
-            </div>
+
             <div class="div-box">
                 <label asp-for="Father"></label>
-                <select asp-for="Father" asp-items="@(new SelectList(ViewBag.CodeWordsList))" asp-allow-null="true">
-                    <option value="">Виберіть значения</option>
+                <select asp-for="Father" asp-items="@(new SelectList(ViewBag.CodeWordsList, "Value", "Text"))" asp-allow-null="true">
+                    <option value="">Виберіть значення</option>
                 </select>
                 <span asp-validation-for="Father"></span>
             </div>
+
             <div class="div-box">
                 <label asp-for="View"></label>
                 <select asp-for="View">
@@ -59,9 +59,17 @@
                 </select>
                 <span asp-validation-for="View"></span>
             </div>
+
             <div class="div-box">
-                <label asp-for="Child">Чи будуть дочерні сторінки</label>
+                <label asp-for="Child">Чи будуть дочірні сторінки</label>
                 <select asp-for="Child">
+                    <option value="true">Так</option>
+                    <option value="false">Ні</option>
+                </select>
+            </div>
+            <div class="div-box">
+                <label asp-for="Index">Чи будуть сторінки на головну сторінку виводитися?</label>
+                <select asp-for="Index">
                     <option value="true">Так</option>
                     <option value="false">Ні</option>
                 </select>
@@ -71,27 +79,31 @@
                 <input asp-for="Number" placeholder="порядковий номер у меню" />
                 <span asp-validation-for="Number"></span>
             </div>
+
             <input type="submit" value="Зберегти" />
         </form>
     </div>
 </div>
 
-<!-- Инициализация TinyMCE -->
+<!-- Ініціалізація TinyMCE -->
 <script>
     tinymce.init({
         selector: '#editor',
-        plugins: 'lists link image media table code',  // Добавляем плагин media
-        toolbar: 'undo redo | formatselect | fontselect fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | code',  // Добавляем кнопку media
+        plugins: 'lists link image media table code',
+        toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | code',
         fontsize_formats: '14pt 16pt 18pt 20pt 22pt 24pt 26pt 28pt 30pt',
         font_formats: 'Times New Roman=times new roman,times,serif;',
         branding: false,
-        language: 'uk',  // Устанавливаем украинский язык интерфейса
+        language: 'uk',
         setup: function (editor) {
             editor.on('change', function () {
                 document.getElementById('text').value = tinymce.get('editor').getContent();
             });
         },
-        media_live_embeds: true  // Позволяет загружать видео через вставку ссылок или с помощью тегов
+        init_instance_callback: function (editor) {
+            var textValue = document.getElementById('text').value;
+            editor.setContent(textValue);
+        }
     });
 
     function saveContent() {

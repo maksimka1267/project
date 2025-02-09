@@ -1,4 +1,4 @@
-﻿@model ArticleItemDto
+﻿@model NewsItemDto
 @{
     string strTitle = "Редагувати запис";
     ViewBag.Title = strTitle;
@@ -8,7 +8,6 @@
 <script src="https://cdn.tiny.cloud/1/tiyj0l8xod12yl6wsxklu86x6zdz9xukjvmtn0zqe9xl3ya8/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="https://cdn.tiny.cloud/1/tiyj0l8xod12yl6wsxklu86x6zdz9xukjvmtn0zqe9xl3ya8/tinymce/6/langs/uk.js"></script> <!-- Украинский язык -->
 <script src="~/js/tinymce/plugins/gallery/plugin.js"></script>
-
 <style>
     .form-container {
         max-width: 600px;
@@ -23,7 +22,7 @@
 <div class="form-container">
     <h2>@strTitle</h2>
     <div>
-        <form asp-area="Hort" asp-controller="ServiceItems" asp-action="Edit" method="post" enctype="multipart/form-data" onsubmit="return saveContent();">
+        <form asp-area="Hort" asp-controller="NewsItems" asp-action="Edit" method="post" enctype="multipart/form-data" onsubmit="return saveContent();">
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="DateAdded" />
             <input type="hidden" asp-for="TitleImage" />
@@ -85,8 +84,8 @@
 <script>
         tinymce.init({
         selector: '#editor',
-        plugins: 'lists link image media table code codesample gallery',  // Добавляем плагин gallery
-        toolbar: 'undo redo | formatselect | fontselect fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media gallery | code codesample',  // Добавляем кнопку gallery
+        plugins: 'lists link image media table code gallery',  // Добавляем плагин gallery
+        toolbar: 'undo redo | formatselect | fontselect fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media gallery | code',  // Добавляем кнопку gallery
         fontsize_formats: '14pt 16pt 18pt 20pt 22pt 24pt 26pt 28pt 30pt',
         font_formats: 'Times New Roman=times new roman,times,serif;',
         branding: false,

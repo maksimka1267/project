@@ -27,11 +27,11 @@
 					<section class="du-admission-content">
 
 						<div class="row">
-							@foreach(ServiceItem item in ViewBag.ServiceItems)
+							@foreach(var item in ViewBag.ServiceItems)
 							{
 								<div class="col-md-4 ">
 									<div class="thumbnail">
-										<img src="data:image/jpeg;base64,@Convert.ToBase64String(item.TitleImage)" title="Designed by vectorjuice / Freepik">
+										<img src="@Url.Action("GetImage", "Services", new { id = item.TitleImage })" title="Designed by vectorjuice / Freepik">
 										<div class="caption" style="height:120px; text-align:center">
 											<h4>@item.Title</h4>
 
