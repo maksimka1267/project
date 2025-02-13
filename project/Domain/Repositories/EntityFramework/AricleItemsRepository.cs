@@ -105,6 +105,7 @@ namespace project.Domain.Repositories.EntityFramework
                 }
                 else
                 {
+                    entity.DateAdded = DateTime.UtcNow;
                     _context.Entry(entity).State = EntityState.Modified;
                 }
                 await _context.SaveChangesAsync();

@@ -72,13 +72,43 @@ namespace project.Controllers
         public async Task<IActionResult> About(string title)
         {
             var page = await dataManager.TextFields.GetTextByTitleAsync(title);
-            var pages = await dataManager.TextFields.GetTextByFatherAsync(page.Id);
+            var subPages = await dataManager.TextFields.GetTextByFatherAsync(page.Id);
+
+            // Получаем элементы подстраниц по их порядку
+            var commissionPage = subPages.FirstOrDefault(p => p.Title == "Циклові комісії");
+            var adminPage = subPages.FirstOrDefault(p => p.Title == "Адміністрація");
+            var tradePage = subPages.FirstOrDefault(p => p.Title == "Профспілкова організація");
+
             ViewBag.ServiceAbout = await dataManager.ServiceItems.GetServiceByFatherAsync(page.Id);
-            ViewBag.ServiceCommission = await dataManager.ServiceItems.GetServiceByFatherAsync(pages[0].Id);
-            ViewBag.ServiceAdmin = await dataManager.ServiceItems.GetServiceByFatherAsync(pages[1].Id);
-            ViewBag.ServiceTrade = await dataManager.ServiceItems.GetServiceByFatherAsync(pages[2].Id);
+
+            if (commissionPage != null)
+            {
+                ViewBag.ServiceCommission = await dataManager.ServiceItems.GetServiceByFatherAsync(commissionPage.Id);
+            }
+
+            if (adminPage != null)
+            {
+                ViewBag.ServiceAdmin = await dataManager.ServiceItems.GetServiceByFatherAsync(adminPage.Id);
+            }
+
+            if (tradePage != null)
+            {
+                var article = await dataManager.ServiceItems.GetServiceByFatherAsync(tradePage.Id);
+
+                // Получаем список всех Id
+                var articleIds = article.Select(a => a.Text).ToList();
+
+                // Запрашиваем все данные одним запросом асинхронно
+                var texts = await _context.TextModels
+                    .Where(t => articleIds.Contains(t.Id))
+                    .Select(t => t.Text)
+                    .ToListAsync();  // используем ToListAsync для асинхронного выполнения запроса
+                ViewBag.ServiceTrade = texts;
+            }
+
             return View();
         }
+
         public async Task<IActionResult> Admissions(string title)
         {
 
@@ -102,7 +132,7 @@ namespace project.Controllers
         {
             const int pageSize = 10;
             var father = await dataManager.TextFields.GetTextByTitleAsync(title);
-            var totalItems = await dataManager.NewsItems.GetTotalNewsItemCountByFatherAsync(father.Id);
+            var totalItems = await dataManager.NewsItems.GetTotalNewsItemCountByFatherAsync();
             ViewBag.ServiceItems = await dataManager.NewsItems.GetPagedNewsItemsByFatherAsync(null, page, pageSize);
             ViewBag.Title = title;
             ViewBag.CurrentPage = page;

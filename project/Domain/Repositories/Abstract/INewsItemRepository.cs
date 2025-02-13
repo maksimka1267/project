@@ -15,6 +15,6 @@ namespace project.Domain.Repositories.Abstract
         Task<List<NewsItem>> GetPagedNewsItemsByFatherAsync(Guid? father, int page, int pageSize);
         Task DeleteNewsItemAsync(Guid id);
         Task<bool> ToggleActiveAsync(Guid id);
-        Task<int> GetTotalNewsItemCountByFatherAsync(Guid father);
+        Task<int> GetTotalNewsItemCountByFatherAsync();
     }
 }

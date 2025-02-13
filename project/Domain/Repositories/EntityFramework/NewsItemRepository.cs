@@ -104,9 +104,9 @@ namespace project.Domain.Repositories.EntityFramework
                 Take(3)
                 );
         }
-        public async Task<int> GetTotalNewsItemCountByFatherAsync(Guid father)
+        public async Task<int> GetTotalNewsItemCountByFatherAsync()
         {
-            return await _context.News.Where(x=>x.Active==true).CountAsync(x => x.Father == father);
+            return await _context.News.Where(x=>x.Active==true).CountAsync();
         }
 
         public async Task SaveNewsItemAsync(NewsItem entity)
@@ -119,6 +119,7 @@ namespace project.Domain.Repositories.EntityFramework
                 }
                 else
                 {
+                    entity.DateAdded = DateTime.UtcNow;
                     _context.Entry(entity).State = EntityState.Modified;
                 }
                 await _context.SaveChangesAsync();
