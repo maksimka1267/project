@@ -42,7 +42,7 @@ namespace project.Areas.Hort.Controllers
                     Id = entity.Id,
                     Title = entity.Title,
                     TitleImage = photoEntity.ImageData,
-                    Father = entity.Father,
+                    Father = entity?.Father,
                     MakePage = entity.MakePage,
                     ShowBanners = entity.ShowBanners,
                     Subtitle = entity.Subtitle,
@@ -66,7 +66,7 @@ namespace project.Areas.Hort.Controllers
                     article.ShowBanners = model.ShowBanners;
                     article.Subtitle = model.Subtitle;
                     article.Id = model.Id;
-                    article.Father = model.Father;
+                    article.Father = model?.Father;
                     article.MakePage = model.MakePage;
                 }
                 else

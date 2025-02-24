@@ -17,8 +17,7 @@ namespace project.Domain.Entities
         public string? Text { get; set; }
 
         [Display(Name = "Батьківська сторінка")]
-        [Required(ErrorMessage = "Обов'язково вибиріть батьківську сторінку")]
-        public Guid Father { get; set; }
+        public Guid? Father { get; set; }
 
         [Display(Name = "Стаття для банеру")]
         public bool ShowBanners { get; set; } = false;

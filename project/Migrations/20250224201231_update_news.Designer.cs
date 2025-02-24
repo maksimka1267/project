@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using project.Domain;
 
@@ -11,9 +12,10 @@ using project.Domain;
 namespace project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250224201231_update_news")]
+    partial class update_news
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +54,7 @@ namespace project.Migrations
                         new
                         {
                             Id = "7f233c4a-8b63-4ad6-9221-d6c3fae843ce",
-                            ConcurrencyStamp = "a8e734e8-defd-4be5-ad30-e28839d37d80",
+                            ConcurrencyStamp = "557e4bb6-d9ac-4ee0-997c-01afc53b94b8",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -152,13 +154,13 @@ namespace project.Migrations
                         {
                             Id = "05703e3c-2761-45e8-90b4-cab9d6d7dadb",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "465546fd-bc71-48cd-a691-09ff18fd520a",
+                            ConcurrencyStamp = "dd796031-0a03-41e6-a22d-7ecb345e97c2",
                             Email = "mari126723@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MARI126723@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBsVynszkgSmC21RKtTZbH8LfuA5bsydwLXibEE0pbHPAVg9FvjclA+LXNtFL2SbHQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELI6jbpc9eGdEU9+mIlXMi6wi6MGcY+uAU05EmfV4cdTUEdqs7ysFeCSpFH6ZIzshA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -306,6 +308,7 @@ namespace project.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("Father")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("MakePage")

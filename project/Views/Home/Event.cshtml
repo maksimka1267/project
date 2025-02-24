@@ -25,7 +25,7 @@
                         {
                             foreach (var item in ViewBag.ServiceItems)
                             {
-                                <div class="row" style="height:310px">
+                                <div class="row">
                                     <!-- Left column -->
                                     <div class="col-lg-4 col-md-12 col-sm-12 du-news-date-box wow fadeInRight" data-wow-delay="0.2s">
                                         <div>
@@ -37,7 +37,7 @@
                                     <!-- Right column (Image) -->
                                     <div class="col-lg-8 col-md-12 col-sm-12 wow fadeInLeft">
                                         <figure>
-                                            <a asp-controller="Services" asp-action="Index" asp-route-id="@item.Id">
+                                            <a asp-controller="NewsItems" asp-action="Index" asp-route-id="@item.Id">
                                                 <img src="@Url.Action("GetImage", "Services", new { id = item.TitleImage })" alt="" style="width:100%;max-height:250px">
                                             </a>
                                         </figure>

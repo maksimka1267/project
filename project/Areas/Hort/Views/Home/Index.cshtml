@@ -8,16 +8,19 @@
             <div>
                 <h3>Статті</h3>
                 <div>
-                    <a asp-area="Hort" asp-controller="ServiceItems" asp-action="Edit" asp-route-id="">Створити стату</a>
+                    <a asp-area="Hort" asp-controller="ServiceItems" asp-action="Edit" asp-route-id="">Створити статтю</a>
                 </div>
                 <div>
-                    @foreach(var title in ViewBag.PageName)
+                    @foreach (var title in ViewBag.PageName)
                     {
-                        <h4>@title.Text</h4>
-                        <div>
-                            @foreach (var entity in ViewBag.ServiceItems)
-                            {
-                                if (entity.Father.ToString().ToUpper() == title.Value)
+                        var serviceItems = (IEnumerable<ArticleItem>)ViewBag.ServiceItems;
+                        var relatedServices = serviceItems.Where(entity => entity.Father.ToString().ToUpper() == title.Value).ToList();
+
+                        if (relatedServices.Any())
+                        {
+                            <h4>@title.Text <button class="toggle-btn" data-target="service-@title.Value">+</button></h4>
+                            <div id="service-@title.Value" style="display: none;">
+                                @foreach (var entity in relatedServices)
                                 {
                                     <div>
                                         <a asp-area="Hort" asp-controller="ServiceItems" asp-action="Edit" asp-route-id="@entity.Id">редагувати</a>
@@ -27,23 +30,19 @@
                                             <a href="#" onclick="document.getElementById('form-@entity.Id').submit();">видалити</a>
                                         </form>
                                         |
-                                        <a asp-area="" asp-controller="Services" asp-action="Index" asp-route-id="@entity.Id">
-                                            @($"{entity.Title}")
-                                        </a>
+                                        <a asp-area="" asp-controller="Services" asp-action="Index" asp-route-id="@entity.Id">@entity.Title</a>
                                         |
                                         <a asp-area="Hort" asp-controller="ServiceItems" asp-action="ToggleActive" asp-route-id="@entity.Id">
                                             @(entity.Active ? "Деактивувати" : "Активувати")
                                         </a>
                                     </div>
-                                }else{
-                                    Console.WriteLine(entity.Father.ToString().ToUpper());
                                 }
-                                
-                            }
-                        </div>
+                            </div>
                         }
-                    </div>
+                    }
                 </div>
+            </div>
+
             <div>
                 <h3>Новини</h3>
                 <div>
@@ -52,11 +51,14 @@
                 <div>
                     @foreach (var title in ViewBag.ArticleName)
                     {
-                        <h4>@title.Text</h4>
-                        <div>
-                            @foreach (var entity in ViewBag.NewsItems)
-                            {
-                                if (entity.Father.ToString().ToUpper() == title.Value)
+                        var newsItems = (IEnumerable<NewsItem>)ViewBag.NewsItems;
+                        var relatedNews = newsItems.Where(entity => entity.Father != null && entity.Father.ToString().ToUpper() == title.Value).ToList();
+
+                        if (relatedNews.Any())
+                        {
+                            <h4>@title.Text <button class="toggle-btn" data-target="news-@title.Value">+</button></h4>
+                            <div id="news-@title.Value" style="display: none;">
+                                @foreach (var entity in relatedNews)
                                 {
                                     <div>
                                         <a asp-area="Hort" asp-controller="NewsItems" asp-action="Edit" asp-route-id="@entity.Id">редагувати</a>
@@ -66,53 +68,92 @@
                                             <a href="#" onclick="document.getElementById('form-@entity.Id').submit();">видалити</a>
                                         </form>
                                         |
-                                        <a asp-area="" asp-controller="NewsItems" asp-action="Index" asp-route-id="@entity.Id">
-                                            @($"{entity.Title}")
-                                        </a>
+                                        <a asp-area="" asp-controller="NewsItems" asp-action="Index" asp-route-id="@entity.Id">@entity.Title</a>
                                         |
                                         <a asp-area="Hort" asp-controller="NewsItems" asp-action="ToggleActive" asp-route-id="@entity.Id">
                                             @(entity.Active ? "Деактивувати" : "Активувати")
                                         </a>
-
                                     </div>
                                 }
-
-                            }
-                        </div>
+                            </div>
+                        }
                     }
                 </div>
             </div>
-                <div>
-                    <h3>Сторінки сайту</h3>
-                    <div>
-                        <a asp-area="Hort" asp-controller="TextFields" asp-action="Edit" asp-route-id="">Створити сторінку</a>
-                    </div>
-                    <div>
-                        <h3>Редагувати сторінки сайту</h3>
+
+            <!-- Новини без категорії -->
+            <h3>Новини без категорії</h3>
+            <div>
+                @foreach (var entity in ViewBag.NewsItems)
+                {
+                    if (entity.Father == null)
+                    {
                         <div>
-                            @foreach (var entity in ViewBag.TextFields)
-                            {
-                                <div>
-                                    <a asp-area="Hort" asp-controller="TextFields" asp-action="Edit" asp-route-id="@entity.Id">редагувати</a>
-                                    |
-                                    <form style="display: inline-block;" id="form-@entity.Id" asp-area="Hort" asp-controller="TextFields" asp-action="Delete" method="post">
-                                        <input type="hidden" name="id" value="@entity.Id">
-                                        <a href="#" onclick="document.getElementById('form-@entity.Id').submit();">видалити</a>
-                                    </form>
-                                    |
-                                    <a asp-area="" asp-controller="Home" asp-action="@entity.View" asp-route-id="@entity.Id">
-                                        @($"{entity.Title}")
-                                    </a>
-                                </div>
-                            }
+                            <a asp-area="Hort" asp-controller="NewsItems" asp-action="Edit" asp-route-id="@entity.Id">редагувати</a>
+                            |
+                            <form style="display: inline-block;" id="form-@entity.Id" asp-area="Hort" asp-controller="NewsItems" asp-action="Delete" method="post">
+                                <input type="hidden" name="id" value="@entity.Id">
+                                <a href="#" onclick="document.getElementById('form-@entity.Id').submit();">видалити</a>
+                            </form>
+                            |
+                            <a asp-area="" asp-controller="NewsItems" asp-action="Index" asp-route-id="@entity.Id">@entity.Title</a>
+                            |
+                            <a asp-area="Hort" asp-controller="NewsItems" asp-action="ToggleActive" asp-route-id="@entity.Id">
+                                @(entity.Active ? "Деактивувати" : "Активувати")
+                            </a>
                         </div>
-                    </div>
+                    }
+                }
+            </div>
+
+            <div>
+                <h3>Сторінки сайту</h3>
+                <div>
+                    <a asp-area="Hort" asp-controller="TextFields" asp-action="Edit" asp-route-id="">Створити сторінку</a>
                 </div>
                 <div>
-                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
-                        <input type="submit" value="Вийти" />
-                    </form>
+                    <h3>Редагувати сторінки сайту</h3>
+                    <div>
+                        @foreach (var entity in ViewBag.TextFields)
+                        {
+                            <div>
+                                <a asp-area="Hort" asp-controller="TextFields" asp-action="Edit" asp-route-id="@entity.Id">редагувати</a>
+                                |
+                                <form style="display: inline-block;" id="form-@entity.Id" asp-area="Hort" asp-controller="TextFields" asp-action="Delete" method="post">
+                                    <input type="hidden" name="id" value="@entity.Id">
+                                    <a href="#" onclick="document.getElementById('form-@entity.Id').submit();">видалити</a>
+                                </form>
+                                |
+                                <a asp-area="" asp-controller="Home" asp-action="@entity.View" asp-route-id="@entity.Id">@entity.Title</a>
+                            </div>
+                        }
+                    </div>
                 </div>
+            </div>
+
+            <div>
+                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                    <input type="submit" value="Вийти" />
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".toggle-btn").forEach(button => {
+            button.addEventListener("click", function() {
+                let targetId = this.getAttribute("data-target");
+                let targetDiv = document.getElementById(targetId);
+                if (targetDiv.style.display === "none") {
+                    targetDiv.style.display = "block";
+                    this.textContent = "-";
+                } else {
+                    targetDiv.style.display = "none";
+                    this.textContent = "+";
+                }
+            });
+        });
+    });
+</script>

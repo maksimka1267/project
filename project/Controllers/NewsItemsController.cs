@@ -17,13 +17,14 @@ namespace project.Controllers
             var text = await dataManager.TextModels.GetTextModelByIdAsync(article.Text);
             ViewBag.Photo = photo.ImageData;
             ViewBag.Text = text.Text;
-            ViewBag.News = await dataManager.NewsItems.GetTop3NewsByFatherAsync(article.Id);
+            ViewBag.News = await dataManager.NewsItems.GetTop3NewsAsync();
             return View("Show", article);
         }
         public async Task<IActionResult> Header(string title)
         {
             var serviceItems = await dataManager.NewsItems.GetAllNewsItemsAsync();
             ViewBag.ServiceItem = serviceItems;
+            ViewBag.News = await dataManager.NewsItems.GetTop3NewsAsync();
             return View("Show", await dataManager.NewsItems.GetNewsItemByTitleAsync(title));
         }
     }
