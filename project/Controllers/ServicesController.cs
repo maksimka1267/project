@@ -32,15 +32,19 @@ namespace project.Controllers
         }
         public async Task<IActionResult> Header(string title)
         {
-            var serviceItems =await dataManager.ServiceItems.GetServiceItemByTitleAsync(title);
-            ViewBag.ServiceItem = serviceItems;
-            var news = await dataManager.NewsItems.GetTop3NewsByFatherAsync(serviceItems.Id);
+            var article =await dataManager.ServiceItems.GetServiceItemByTitleAsync(title);
+            ViewBag.ServiceItem = article;
+            var news = await dataManager.NewsItems.GetTop3NewsByFatherAsync(article.Id);
+            var photo = await dataManager.PhotoItems.GetPhotoModelByIdAsync(article.TitleImage);
+            var text = await dataManager.TextModels.GetTextModelByIdAsync(article.Text);
+            ViewBag.Photo = photo.ImageData;
+            ViewBag.Text = text.Text;
             if (news == null || !news.Any())  // Проверка на null или пустой список
             {
                 news = await dataManager.NewsItems.GetTop3NewsAsync();
             }
             ViewBag.News = news;
-            return View("Show", serviceItems);
+            return View("Show", article);
         }
         [HttpGet]
         public async Task<IActionResult> GetImage(Guid id)

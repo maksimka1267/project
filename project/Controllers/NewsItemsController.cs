@@ -20,12 +20,5 @@ namespace project.Controllers
             ViewBag.News = await dataManager.NewsItems.GetTop3NewsAsync();
             return View("Show", article);
         }
-        public async Task<IActionResult> Header(string title)
-        {
-            var serviceItems = await dataManager.NewsItems.GetAllNewsItemsAsync();
-            ViewBag.ServiceItem = serviceItems;
-            ViewBag.News = await dataManager.NewsItems.GetTop3NewsAsync();
-            return View("Show", await dataManager.NewsItems.GetNewsItemByTitleAsync(title));
-        }
     }
 }
