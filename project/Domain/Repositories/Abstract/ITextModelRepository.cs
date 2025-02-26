@@ -7,6 +7,7 @@ namespace project.Domain.Repositories.Abstract
         Task<TextModel> GetTextModelByIdAsync(Guid id);
         Task<string?> GetTextTextModelByIdAsync(Guid id);
         Task SaveTextModelAsync(TextModel entity);
+        Task UpdateTextModelAsync(TextModel entity);
         Task DeleteTextModelAsync(Guid id);
     }
 }

@@ -94,27 +94,30 @@ namespace project.Domain.Repositories.EntityFramework
                 OrderByDescending(item => item.DateAdded)
             );
         }
-
         public async Task SaveServiceItemAsync(ArticleItem entity)
         {
             try
             {
-                if (entity.Id == default)
+                var existingEntity = await _context.ArticleItems.FindAsync(entity.Id);
+
+                if (existingEntity == null)
                 {
-                    _context.Entry(entity).State = EntityState.Added;
+                    // Если объект новый, добавляем его
+                    _context.ArticleItems.Add(entity);
                 }
                 else
                 {
-                    entity.DateAdded = DateTime.UtcNow;
-                    _context.Entry(entity).State = EntityState.Modified;
+                    // Если объект уже отслеживается, применяем обновление
+                    _context.Entry(existingEntity).CurrentValues.SetValues(entity);
                 }
+
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                // Добавьте логирование исключения
                 throw new Exception($"Ошибка при сохранении записи: {ex.Message}", ex);
             }
         }
+
     }
 }

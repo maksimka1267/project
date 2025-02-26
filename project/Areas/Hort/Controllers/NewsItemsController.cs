@@ -66,15 +66,23 @@ namespace project.Areas.Hort.Controllers
                     article.ShowBanners = model.ShowBanners;
                     article.Subtitle = model.Subtitle;
                     article.Id = model.Id;
-                    article.Father = model?.Father;
+                    article.Father = model.Father;
                     article.MakePage = model.MakePage;
                 }
                 else
                 {
-                    article = test;
+                    article.Id = test.Id;
+                    article.Title = model.Title;
+                    article.ShowBanners = model.ShowBanners;
+                    article.Subtitle = model.Subtitle;
+                    article.Father = model.Father;
+                    article.TitleImage = test.TitleImage;
+                    article.Text = test.Text;
+                    article.MakePage = model.MakePage;
+                    article.DateAdded = DateTime.Now;
                 }
                 // Если новое изображение загружено, сохраняем его
-                if(titleImageFile != null)
+                if (titleImageFile != null)
                 {
                     using (var memoryStream = new MemoryStream())
                     {
@@ -99,11 +107,17 @@ namespace project.Areas.Hort.Controllers
                 }
                 var codeWordsList = await dataManager.ServiceItems.GetDistinctTitlesWithIdsAsync();
                 ViewBag.CodeWordsList = codeWordsList;
-                TextModel text = new TextModel
+                var text = await dataManager.TextModels.GetTextModelByIdAsync(article.Text);
+                if (text == null)
                 {
-                    Text = model.Text
-                };
-                await dataManager.TextModels.SaveTextModelAsync(text);
+                    text = new TextModel { Text = model.Text };
+                    await dataManager.TextModels.SaveTextModelAsync(text);
+                }
+                else
+                {
+                    text.Text = model.Text;
+                    await dataManager.TextModels.UpdateTextModelAsync(text);
+                }
                 article.Text = text.Id;
                 await dataManager.NewsItems.SaveNewsItemAsync(article);
                 return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).CutController());

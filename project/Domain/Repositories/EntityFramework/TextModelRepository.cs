@@ -52,14 +52,20 @@ namespace project.Domain.Repositories.EntityFramework
         {
             try
             {
-                if (entity.Id == default)
-                {
-                    _context.Entry(entity).State = EntityState.Added;
-                }
-                else
-                {
-                    _context.Entry(entity).State = EntityState.Modified;
-                }
+                _context.Entry(entity).State = EntityState.Added;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // Логируйте исключение
+                throw new Exception($"Ошибка при сохранении TextField: {ex.Message}", ex);
+            }
+        }
+        public async Task UpdateTextModelAsync(TextModel entity)
+        {
+            try
+            {
+                _context.Entry(entity).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
