@@ -17,10 +17,11 @@ namespace project.Areas.Hort.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            ViewBag.TextFields = await dataManager.TextFields.GetAllTitlesAndIdsAsync();
-            ViewBag.ServiceItems = await dataManager.ServiceItems.GetAllTitlesAndIdsAsync();
-            //ViewBag.PhotoFields = dataManager.PhotoFields.GetPhoto();
-            ViewBag.Name = await dataManager.TextFields.GetDistinctTitlesAsync();
+            ViewBag.TextFields = await dataManager.TextFields.GetTextFieldsAsync();
+            ViewBag.ServiceItems = await dataManager.ServiceItems.GetAllServiceItemsAsync();
+            ViewBag.NewsItems = await dataManager.NewsItems.GetAllNewsItemsAsync();
+            ViewBag.ArticleName = await dataManager.ServiceItems.GetDistinctTitlesWithIdsAsync();
+            ViewBag.PageName = await dataManager.TextFields.GetDistinctTitlesWithIdsAsync();
             return View();
         }
 

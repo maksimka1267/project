@@ -12,8 +12,8 @@ using project.Domain;
 namespace project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241008210955_first")]
-    partial class first
+    [Migration("20250209190846_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,7 +54,7 @@ namespace project.Migrations
                         new
                         {
                             Id = "7f233c4a-8b63-4ad6-9221-d6c3fae843ce",
-                            ConcurrencyStamp = "0670fc1c-5575-4a79-a2af-fecbf6aa8380",
+                            ConcurrencyStamp = "4b209071-b494-4020-9d1b-350c33e396a1",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -154,13 +154,13 @@ namespace project.Migrations
                         {
                             Id = "05703e3c-2761-45e8-90b4-cab9d6d7dadb",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "363ef3b8-d1ad-4bdd-b7e5-8ec647dbb89f",
+                            ConcurrencyStamp = "499f4a53-a187-4563-abd0-7e4aeef2e700",
                             Email = "mari126723@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MARI126723@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGJIe33YSDE6cf+sKYdFowxzE86BmDEZkxmOV6v+ufUSI6+bAL6qZ6gywkBtKTBv0Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEESy6r2A9oxDVelTf3hPg7nQDqzq0V0EnK6w5PxYnDeJoDxbjnojJGned4wG6544VQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -256,46 +256,20 @@ namespace project.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("project.Domain.Entities.PhotoField", b =>
+            modelBuilder.Entity("project.Domain.Entities.ArticleItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte[]>("PhotoData")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TitleImagePath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("photoFields");
-                });
-
-            modelBuilder.Entity("project.Domain.Entities.ServiceItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("Father")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateAdded")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Father")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("MakePage")
                         .HasColumnType("bit");
@@ -306,22 +280,61 @@ namespace project.Migrations
                     b.Property<string>("Subtitle")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("Text")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("TitleImage")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<Guid>("TitleImage")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceItems");
+                    b.ToTable("ArticleItems");
                 });
 
-            modelBuilder.Entity("project.Domain.Entities.TextField", b =>
+            modelBuilder.Entity("project.Domain.Entities.NewsItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Father")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("MakePage")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ShowBanners")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Subtitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Text")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("TitleImage")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("News");
+                });
+
+            modelBuilder.Entity("project.Domain.Entities.PageItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -330,22 +343,20 @@ namespace project.Migrations
                     b.Property<bool?>("Child")
                         .HasColumnType("bit");
 
-                    b.Property<string>("CodeWord")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Father")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("Father")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Index")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("Text")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -357,7 +368,35 @@ namespace project.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TextFields");
+                    b.ToTable("PageItems");
+                });
+
+            modelBuilder.Entity("project.Domain.Entities.PhotoModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PhotoModels");
+                });
+
+            modelBuilder.Entity("project.Domain.Entities.TextModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TextModels");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

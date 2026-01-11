@@ -19,8 +19,11 @@ configuration.AddEnvironmentVariables();
 configuration.AddCommandLine(args);
 
 // Configure services
-builder.Services.AddTransient<ITextFieldsRepository, EFTextFieldsRepository>();
-builder.Services.AddTransient<IServiceItemsRepository, EFServiceItemsRepository>();
+builder.Services.AddTransient<IPageItemsRepository, PageItemsRepository>();
+builder.Services.AddTransient<IArticleItemsRepository, AricleItemsRepository>();
+builder.Services.AddTransient<ITextModelRepository, TextModelRepository>();
+builder.Services.AddTransient<IPhotoItemRepository, PhotoItemRepository>();
+builder.Services.AddTransient<INewsItemRepository, NewsItemRepository>();
 builder.Services.AddTransient<DataManager>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>

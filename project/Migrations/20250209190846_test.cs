@@ -5,10 +5,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace project.Migrations
 {
-    public partial class first : Migration
+    public partial class test : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ArticleItems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Subtitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Text = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Father = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ShowBanners = table.Column<bool>(type: "bit", nullable: false),
+                    TitleImage = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MakePage = table.Column<bool>(type: "bit", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ArticleItems", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -49,57 +69,66 @@ namespace project.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "photoFields",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TitleImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhotoData = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_photoFields", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ServiceItems",
+                name: "News",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Subtitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Father = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Text = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Father = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ShowBanners = table.Column<bool>(type: "bit", nullable: false),
-                    TitleImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    TitleImage = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MakePage = table.Column<bool>(type: "bit", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
                     DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ServiceItems", x => x.Id);
+                    table.PrimaryKey("PK_News", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TextFields",
+                name: "PageItems",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CodeWord = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Father = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Text = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Father = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     View = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Child = table.Column<bool>(type: "bit", nullable: true),
                     Number = table.Column<int>(type: "int", nullable: false),
+                    Index = table.Column<bool>(type: "bit", nullable: false),
                     DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TextFields", x => x.Id);
+                    table.PrimaryKey("PK_PageItems", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PhotoModels",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PhotoModels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TextModels",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TextModels", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -211,12 +240,12 @@ namespace project.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "7f233c4a-8b63-4ad6-9221-d6c3fae843ce", "0670fc1c-5575-4a79-a2af-fecbf6aa8380", "admin", "ADMIN" });
+                values: new object[] { "7f233c4a-8b63-4ad6-9221-d6c3fae843ce", "4b209071-b494-4020-9d1b-350c33e396a1", "admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "05703e3c-2761-45e8-90b4-cab9d6d7dadb", 0, "363ef3b8-d1ad-4bdd-b7e5-8ec647dbb89f", "mari126723@gmail.com", true, false, null, "MARI126723@GMAIL.COM", "ADMIN", "AQAAAAEAACcQAAAAEGJIe33YSDE6cf+sKYdFowxzE86BmDEZkxmOV6v+ufUSI6+bAL6qZ6gywkBtKTBv0Q==", null, false, "", false, "admin" });
+                values: new object[] { "05703e3c-2761-45e8-90b4-cab9d6d7dadb", 0, "499f4a53-a187-4563-abd0-7e4aeef2e700", "mari126723@gmail.com", true, false, null, "MARI126723@GMAIL.COM", "ADMIN", "AQAAAAEAACcQAAAAEESy6r2A9oxDVelTf3hPg7nQDqzq0V0EnK6w5PxYnDeJoDxbjnojJGned4wG6544VQ==", null, false, "", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -266,6 +295,9 @@ namespace project.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ArticleItems");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -281,13 +313,16 @@ namespace project.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "photoFields");
+                name: "News");
 
             migrationBuilder.DropTable(
-                name: "ServiceItems");
+                name: "PageItems");
 
             migrationBuilder.DropTable(
-                name: "TextFields");
+                name: "PhotoModels");
+
+            migrationBuilder.DropTable(
+                name: "TextModels");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

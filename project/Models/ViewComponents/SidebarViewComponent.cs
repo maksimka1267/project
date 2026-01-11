@@ -15,7 +15,7 @@ namespace project.Models.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var serviceItems = await dataManager.ServiceItems.GetServiceItemsAsync();
+            var serviceItems = await dataManager.ServiceItems.GetAllServiceItemsAsync();
             return View("Default", serviceItems);
         }
     }

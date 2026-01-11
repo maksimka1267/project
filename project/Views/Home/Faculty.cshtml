@@ -24,7 +24,7 @@
                                 <ul class="du-choose-list">
                                     @{
 										int i = 2;
-										@foreach(TextField item in ViewBag.TextFields)
+										@foreach(PageItem item in ViewBag.TextFields)
 										{
 											<li><a href="#@i"><strong>@item.Title</strong></a></li>
 											i++;
@@ -39,7 +39,7 @@
 				</div>
 				@{
 					int k = 2;
-					@foreach (TextField item in ViewBag.TextFields)
+					@foreach (PageItem item in ViewBag.TextFields)
 					{
 						if (k % 2 == 0)
 						{
